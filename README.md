@@ -144,23 +144,22 @@ Load Base -> KIELMC.DTA (Effect of installing a garbage incinerator on real esta
 
 ```r
 tab year
+#Noted that I do not have a true data panel
 ```
-![1](https://github.com/HenrySchall/Panel-Data/assets/96027335/565abfdf-50d8-4dac-987b-ee32c129b375)
-
-> Observa-se que não tenho um painel de dados verdadeiro
+![Captura de tela 2025-01-31 011359](https://github.com/user-attachments/assets/8d31862d-d239-4016-99ff-95a968d25fec)
 
 ```r
 sum
 ```
-![2](https://github.com/HenrySchall/Panel-Data/assets/96027335/9f5fdf1a-8e46-4bb9-a8e1-7d8e842ce0d2)
+![Captura de tela 2025-01-31 011412](https://github.com/user-attachments/assets/5fc7447f-aec2-488a-8890-d2c331fc35c2)
 
 ```r
-#nearinc = dummy de localização
+#nearinc = Location dummy
 reg rprice nearinc if year==1981
 ```
-![3](https://github.com/HenrySchall/Panel-Data/assets/96027335/f849407f-049c-43fe-a715-552934949a35)
+![Captura de tela 2025-01-31 011512](https://github.com/user-attachments/assets/08c64f00-7255-49c9-9a31-76ede825ee33)
 
-> Nosso modelo será significativo do ponto de vista global e a nossa variável nearinc é significativa e negativa, ou seja, em 81, os imóveis que estão localizados próximos do centro de tratamento de lixo possuem preços menores, em média US$30.688, que os imóveis afastados do centro de tratamento de lixo. Todavia será que essa diferença é causada pelo centro de tratamento de lixo?
+> Our model will be significant from a global point of view and our variable nearinc is significant and negative, that is, in 81, the properties that are located close to the waste treatment center have lower prices, on average US$30,688, than the properties far from the waste treatment center. However, is this difference caused by the waste treatment center?
 
 ```r
 reg rprice nearinc if year==1978
