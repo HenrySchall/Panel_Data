@@ -39,7 +39,6 @@ sort year
 #kids variável dependente
 by year: tab kids
 ```
-![3](https://github.com/HenrySchall/Panel_Data/assets/96027335/a2594bbc-866b-4937-b75d-da9adafeeef8)
 
 > Pegando os anos de 72 e 74 como exemplo. Podemos ver que no ano de 72, obtivemos 156 entrevistas 
 e no ano de 74 obtivemos 173 entrevistadas, evidenciando que os dados não são os mesmos para cada período, temos então um Pooled Cross Section.
@@ -48,7 +47,7 @@ e no ano de 74 obtivemos 173 entrevistadas, evidenciando que os dados não são 
 # Fazendo a regressão por MQO Agrupado 
 reg kids educ age age2 black east northcen west farm othrural town smcity y74 y76 y78 y80 y82 y84
 ```
-![4](https://github.com/HenrySchall/Panel_Data/assets/96027335/39a5c91b-f6e0-48f3-9982-8920927dc635)
+![Captura de tela 2025-01-31 004918](https://github.com/user-attachments/assets/8dd033e8-d737-4d90-8be3-1c1f93b36de2)
 
 Descrição das variáveis: 
 - educ = É significativa e possui efeito *negativo* na variável dependente, ou seja, mulheres mais educadas, controlado pelas outras variáveis, tem menos filhos ou o aumento de uma unidade na variável educação, controlado pelos outros fatores, levá a uma diminuição de 14,28% nos níveis de fecundidade. 
@@ -88,7 +87,7 @@ sum
 ```r
 tab year
 ```
-![Captura de tela 2025-01-31 004242](https://github.com/user-attachments/assets/d4e755ff-6744-47a0-9865-b03b2cd462e8)
+![Captura de tela 2025-01-31 004227](https://github.com/user-attachments/assets/6686be41-e9d4-434e-8893-a7ed823ac6b1)
 
 ```
 reg lwage educ exper expersq union female
