@@ -83,17 +83,17 @@ Carregar base -> CPS78_85.DTA (Valor dos salários de 1978 e 1985)
 ```r
 sum
 ```
-![5](https://github.com/HenrySchall/Panel_Data/assets/96027335/61fc84b2-87a4-4f35-a41b-02861b481e67)
+![Captura de tela 2025-01-31 004210](https://github.com/user-attachments/assets/9180194b-1906-4823-b3e8-301ab0bb09e8)
 
 ```r
 tab year
 ```
-![6](https://github.com/HenrySchall/Panel_Data/assets/96027335/93821b32-99df-4846-91cb-3a1fd2b66f41)
+![Captura de tela 2025-01-31 004242](https://github.com/user-attachments/assets/d4e755ff-6744-47a0-9865-b03b2cd462e8)
 
 ```
 reg lwage educ exper expersq union female
 ```
-![7](https://github.com/HenrySchall/Panel_Data/assets/96027335/7a8054bd-676b-4ddb-b294-4f10a9aa41fa)
+![Captura de tela 2025-01-31 004242](https://github.com/user-attachments/assets/a8b78595-8231-4f53-ad23-bfb0edabcd94)
 
 - Nosso modelo é significativo, porque temos Prob > F = 0.0000 e todas as variáveis são significativas estatisticamente (P>|t| = 0.000).
 - Pegando a variável educ como exemplo, podemos dizer que o aumento de 1 ano de educação, controlado pelos outros fatores, leva ao aumento de salário de aproximadamente 8,84%.
