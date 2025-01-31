@@ -22,7 +22,7 @@ $Yit = \beta0 + + \beta1Xit + \beta2Xit + eit$
 
 ## Pooled Cross Section
 
-#### 1st First Example
+#### 1º First Example
 
 Load Base -> FERTIL1.DTA (number of children per woman between 1974 and 1984)
 
@@ -70,7 +70,7 @@ Note that:
 - We have 1,129 observations
 - Our model is significant, because we have Prob > F = 0.0000 . However, not all of our variables are significant at the 10% significance level. - Since the dummies y74, y76, y78, 80 are not significant, that is, controlled by the other factors, the fertility of these years is statistically equal to that of y72. - We can see that the dummies y82 and y84 are significant and negative, that is, controlled by the other factors, there is a long-term trend in the decline of fertility and this decline is approximately (0.522 - 0.545 = -0.023 children).
 
-#### 2nd Second Example
+#### 2º Second Example
 
 Load base -> CPS78_85.DTA (Value of salaries of 1978 and 1985)
 
@@ -120,18 +120,18 @@ Descrição das variáveis:
 ```r
 reg lwage y85 female exper expersq y85fem
 ```
-![01](https://github.com/HenrySchall/Panel_Data/assets/96027335/830acadc-3543-4a99-ba51-52e274ce0b31)
+![Captura de tela 2025-01-31 010313](https://github.com/user-attachments/assets/1c1b78b9-7198-4902-9b04-baee485fb123)
 
 ```r
 reg lwage y85 educ exper expersq y85educ
 ```
-![02](https://github.com/HenrySchall/Panel_Data/assets/96027335/4a37671d-9641-4cc6-9f39-047c42ab6b22)
+![2](https://github.com/user-attachments/assets/8f1720c8-10d6-41e4-bf58-35b1e1ba156c)
 
 ```r
 # Podemos analisar os dois efeitos em conjunto, diminuindo possível multicolinealidade e aumentando os graus de liberade do modelo
 reg lwage y85 educ y85educ exper expersq union female y85fem
 ```
-![03](https://github.com/HenrySchall/Panel_Data/assets/96027335/1c141c26-d495-4e66-9375-25820dc458fe)
+![3](https://github.com/user-attachments/assets/9413607c-1f57-4947-98a2-0ae9facc72b9)
 
 - A dummy de y85 não é significativa, ou seja, controlado pelos outros fatores os salários de y78 e y85 são estatisticamente iguais.
 
