@@ -128,20 +128,19 @@ reg lwage y85 educ exper expersq y85educ
 ![2](https://github.com/user-attachments/assets/8f1720c8-10d6-41e4-bf58-35b1e1ba156c)
 
 ```r
-# Podemos analisar os dois efeitos em conjunto, diminuindo possível multicolinealidade e aumentando os graus de liberade do modelo
+# We can analyze both effects together, reducing possible multicollinearity and increasing the model's degrees of freedom.
 reg lwage y85 educ y85educ exper expersq union female y85fem
 ```
 ![3](https://github.com/user-attachments/assets/9413607c-1f57-4947-98a2-0ae9facc72b9)
 
-- A dummy de y85 não é significativa, ou seja, controlado pelos outros fatores os salários de y78 e y85 são estatisticamente iguais.
+- The dummy for y85 is not significant, i.e., controlled by the other factors, the salaries of y78 and y85 are statistically equal.
 
-- Analisando à variável educ e y85educ. Temos que o aumento de 1 ano de estudo em y78, aumenta os salários em 7,47%, controlado pelos outros fatores. Além disso, no ano de y85 esse efeito é 1,85% maior (7,47% - 8,50% = 1,85%), ou seja, aumento do efeito de um ano para o outro)
+- Analyzing the variable educ and y85educ. We have that the increase of 1 year of study in y78, increases the salaries by 7.47%, controlled by the other factors. Furthermore, in the year y85 this effect is 1.85% greater (7.47% - 8.50% = 1.85%), i.e., an increase in the effect from one year to the next).
 
-- Analisando à variável female e y85fem. Temos que diferença salarial em y78, é de -31,67%, controlado pelos outros fatores. Além disso, no ano de y85 esse efeito é 8,50% menor (31,67% - 8,50% = -23,17%), ou seja, diminuição do efeito de um ano para o outro).
-
-#### 3º Terceiro Exemplo 
-
-Carregar Base -> KIELMC.DTA (Efeito da instalação de um incinerador de lixo no preço dos imóveis em uma região de Massachusetts)
+- Analyzing the variable female and y85fem. We have that the salary difference in y78, is -31.67%, controlled by the other factors. Furthermore, in the year y85 this effect is 8.50% smaller (31.67% - 8.50% = -23.17%), i.e., a decrease in the effect from one year to the next).
+  
+#### 3rd Third Example
+Load Base -> KIELMC.DTA (Effect of installing a garbage incinerator on real estate prices in a region of Massachusetts)
 
 ```r
 tab year
