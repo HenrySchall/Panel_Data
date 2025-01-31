@@ -1,83 +1,78 @@
-# Dados em Painel
-> A estimação de dados em painel é a analise de dados que possuem uma estrutura de dois fatores, ou seja temos um fator que representa diferentes unidades (como indivíduos, empresas, países, etc.) e outro que representa diferentes períodos de tempo. Esse documento procura demonstrar o processo de estimação de dados em painel, usando como base o livro: "*Econometric Analysis of Cross Section and Panel Data, Second Edition, de Jeffrey M. Wooldridge*". Todas as bases utilizadas nesse código podem ser encontradas nesse repositório, para quaisquer dúvidas consultar a obra referenciada.
+# Panel Data
+> Panel data estimation is the analysis of data that have a two-factor structure, i.e., we have one factor that represents different units (such as individuals, companies, countries, etc.) and another that represents different time periods. This document seeks to demonstrate the process of panel data estimation, using as a basis the book: "*Econometric Analysis of Cross Section and Panel Data, Second Edition, by Jeffrey M. Wooldridge*". All the bases used in this code can be found in this repository, for any questions consult the referenced work.
 
-### Características Gerais
-- Heterogeneidade das unidades: Cada unidade (indivíduo, empresa, país, etc.) pode ter características próprias que não variam ao longo do tempo.
-- Variabilidade temporal: As variáveis podem mudar ao longo do tempo para cada unidade.
-- Estrutura longitudinal: A presença de múltiplas observações para cada unidade permite analisar tanto a variabilidade dentro das unidades quanto entre elas.
+### General Characteristics
+- Heterogeneity of units: Each unit (individual, company, country, etc.) may have its own characteristics that do not vary over time.
+- Temporal variability: Variables may change over time for each unit.
+- Longitudinal structure: The presence of multiple observations for each unit allows the analysis of both variability within and between units.
 
-> Podemos dizer que Dados em Painel subdivide-se em dois tipos: Painel Verdadeiro e Agrupadamento de Cortes Transversais. Quando temos um Painel Verdadeiro usa-se a mesma unidade de análise ao longo do tempo (todos os "is" são iguais), ou seja, em uma pesquisa por exemplo os dados serão sobre os mesmos inddvíduos ao longo do tempo. Já um Agrupadamento de Cortes Transversais os "is" não serão os mesmos entre os períodos, ou seja, em uma pesquisa os dados não serão dos mesmos indivíduos. 
+> We can say that Panel Data is subdivided into two types: True Panel and Cross-Section Clustering. When we have a True Panel, the same unit of analysis is used over time (all the "i"s are the same), that is, in a survey, for example, the data will be about the same individuals over time. In a Cross-Section Clustering, the "i"s will not be the same between periods, that is, in a survey the data will not be about the same individuals.
 
-### Modelos de Dados em Painel
-1) Modelo de Agrupamento Cortes Transversais (Pooled Cross Section)
-2) Modelo de Efeitos Fixos (FE) 
-3) Modelo de Efeitos Aleatórios (RE)
-4) Modelo de Efeitos Dinâmicos (GMM)
+### Panel Data Models
+1) Pooled Cross Section Model
+2) Fixed Effects Model (FE) 
+3) Random Effects Model (RE)
+4) Dynamic Effects Model (GMM)
 
-### Equação Geral 
+### General Equation
 $Yit = \beta0 + + \beta1Xit + \beta2Xit + eit$
 
-- i = unidades específicas
-- t = tempo
+- i = specific units
+- t = time
 
-## Pooled Cross Section (Agrupadamento de Cortes Transversais)
+## Pooled Cross Section
 
-#### 1º Primeiro Exemplo 
+#### 1st First Example
 
-Carregar Base -> FERTIL1.DTA (número de filhos por mulher entre os anos 1974 e 1984)
+Load Base -> FERTIL1.DTA (number of children per woman between 1974 and 1984)
 
 ```r
-# Criando variável sugerida pelo autor
+# Creating variable suggested by the author
 gen age2=age^2
 ```
-> Primeiro passo é identificar se temos um Painel Verdadeiro ou um Pooled Cross Section, para isso precisamos descobrir quantas observações temos em cada período.
+> The first step is to identify whether we have a True Panel or a Pooled Cross Section, for this we need to find out how many observations we have in each period.
 
 ```r
 sort year
 ```
 ```r
-#kids variável dependente
+#kids dependent variable
 by year: tab kids
 ```
 
-> Pegando os anos de 72 e 74 como exemplo. Podemos ver que no ano de 72, obtivemos 156 entrevistas 
-e no ano de 74 obtivemos 173 entrevistadas, evidenciando que os dados não são os mesmos para cada período, temos então um Pooled Cross Section.
+> Taking the years 72 and 74 as an example, we can see that in the year 72, we obtained 156 interviews and in the year 74 we obtained 173 interviewees, showing that the data is not the same for each period, so we have a Pooled Cross Section.
 
 ```r
-# Fazendo a regressão por MQO Agrupado 
+# Regression by Grouped OLS
 reg kids educ age age2 black east northcen west farm othrural town smcity y74 y76 y78 y80 y82 y84
 ```
 ![Captura de tela 2025-01-31 004918](https://github.com/user-attachments/assets/8dd033e8-d737-4d90-8be3-1c1f93b36de2)
 
-Descrição das variáveis: 
-- educ = É significativa e possui efeito *negativo* na variável dependente, ou seja, mulheres mais educadas, controlado pelas outras variáveis, tem menos filhos ou o aumento de uma unidade na variável educação, controlado pelos outros fatores, levá a uma diminuição de 14,28% nos níveis de fecundidade. 
-- age = É significativa e possui efeito *positivo* na variável dependente
-- age2 = É significativa e possui efeito negativo na variável dependente
-- black = É significativa e possui efeito positivo na variável dependente
-- east = É significativa e possui efeito positivo na variável dependente
-- northcen = É significativa e possui efeito positivo na variável dependente
-- west = Não é significativa
-- farm = Não é significativa
-- othrural = Não é significativa
-- town = Não é significativa
-- smcity = Não é significativa
-- y74 = Não significativa e possui efeito *positivo*
-- y76 = Não significativa e possui efeito negativo
-- y78 = Não significativa e possui efeito negativo
-- y80 = Não significativa e possui efeito negativo
-- y82 = Significativa e possui efeito negativo
-- y84 = Significativa e possui efeito negativo
+Description of variables:
+- educ = It is significant and has a *negative* effect on the dependent variable, that is, more educated women, controlled by the other variables, have fewer children or an increase of one unit in the education variable, controlled by the other factors, leads to a decrease of 14.28% in fertility levels. - age = Significant and has a *positive* effect on the dependent variable
+- age2 = Significant and has a negative effect on the dependent variable
+- black = Significant and has a positive effect on the dependent variable
+- east = Significant and has a positive effect on the dependent variable
+- northcen = Significant and has a positive effect on the dependent variable
+- west = Not significant
+- farm = Not significant
+- othrural = Not significant
+- town = Not significant
+- smcity = Not significant
+- y74 = Not significant and has a *positive* effect
+- y76 = Not significant and has a negative effect
+- y78 = Not significant and has a negative effect
+- y80 = Not significant and has a negative effect
+- y82 = Significant and has a negative effect
+- y84 = Significant and has a negative effect
 
-Observe que:
-- Temos 1.129 observações
-- Nosso modelo é significativo, porque temos Prob > F = 0.0000 . Todavia, nem todas nossas variáveis são
-significativas ao nível de significância de 10%.
-- Como as dummies de y74,y76,y78,80 são não significativas, ou seja, controlado pelos outros fatores, a fecundidade desses anos é estatisticamente igual a de y72.
-- Podemos ver que as dummies y82 e y84 são significativas e negativas, ou seja, controlado pelos outros fatores, existe uma tendência de longo prazo na queda de fecundidade e essa queda é de aproximadamente de (0.522 - 0.545 = -0,023 filhos).
+Note that:
+- We have 1,129 observations
+- Our model is significant, because we have Prob > F = 0.0000 . However, not all of our variables are significant at the 10% significance level. - Since the dummies y74, y76, y78, 80 are not significant, that is, controlled by the other factors, the fertility of these years is statistically equal to that of y72. - We can see that the dummies y82 and y84 are significant and negative, that is, controlled by the other factors, there is a long-term trend in the decline of fertility and this decline is approximately (0.522 - 0.545 = -0.023 children).
 
-#### 2º Segundo Exemplo
+#### 2nd Second Example
 
-Carregar base -> CPS78_85.DTA (Valor dos salários de 1978 e 1985)
+Load base -> CPS78_85.DTA (Value of salaries of 1978 and 1985)
 
 ```r
 sum
@@ -94,33 +89,33 @@ reg lwage educ exper expersq union female
 ```
 ![Captura de tela 2025-01-31 004242](https://github.com/user-attachments/assets/a8b78595-8231-4f53-ad23-bfb0edabcd94)
 
-- Nosso modelo é significativo, porque temos Prob > F = 0.0000 e todas as variáveis são significativas estatisticamente (P>|t| = 0.000).
-- Pegando a variável educ como exemplo, podemos dizer que o aumento de 1 ano de educação, controlado pelos outros fatores, leva ao aumento de salário de aproximadamente 8,84%.
-- Pegando a variável female como exemplo, podemos dizer que o fato de ser mulher, controlado pelos outros fatores, leva a uma diminuição de salário de aproximadamente 25,08%.
+- Our model is significant because we have Prob > F = 0.0000 and all variables are statistically significant (P>|t| = 0.000).
+- Taking the variable educ as an example, we can say that an increase of 1 year of education, controlled by the other factors, leads to a salary increase of approximately 8.84%.
+- Taking the variable female as an example, we can say that the fact of being a woman, controlled by the other factors, leads to a salary decrease of approximately 25.08%.
 
-> Entretanto qual o efeito real sobre os salários entre 1978 e 1985, levando em conta os fatores educação e ser mulher. Ouve aumento ou diminuição no salário de 1978 em relação a 1985? No exemplo anterior realizamos a diferença entre as dummies y82 e y84, para encontrar esse efeito real, todavia uma alternativa seria utilizar-se do Estimador de Diferenças em Diferenças (DID).
+> However, what is the real effect on salaries between 1978 and 1985, taking into account the factors education and being a woman. Was there an increase or decrease in salary from 1978 in relation to 1985? In the previous example, we performed the difference between the dummies y82 and y84, to find this real effect, however an alternative would be to use the Difference-in-Differences Estimator (DID).
 
-### Estimador de diferença em diferenças (DID)
-> Ele é uma alternativa ao Estimador MQO Agrupado, utiliza-se ele quando queremos capturar o efeito antes e depois de um evento, ou seja, de uma mudança especifica nos dados. Sua lógica é semelhante aos testes farmacêuticos, onde seleciona-se uma população amostral, no qual uma parte dessa população recebe um tratamento (grupo de tratamento) de um certo processo natural, enquanto à outra parte dessa população não recebe o tratamento (grupo de controle). Dado pela seguinte equação:
+### Difference-in-Differences (DID) Estimator
+> This is an alternative to the Pooled OLS Estimator. It is used when we want to capture the effect before and after an event, that is, of a specific change in the data. Its logic is similar to pharmaceutical tests, where a sample population is selected, in which part of this population receives a treatment (treatment group) of a certain natural process, while the other part of this population does not receive the treatment (control group). Given by the following equation:
 
 $Yit = \beta0 +\delta0D + \beta1DT + \delta1 D * DT + eit$
 
 Onde:
 
 $\delta0D$ = Dummy pós-evento 
-- 0 = período observado anterior ao evento 
-- 1 = período observado após o evento
+- 0 = period observed prior to the event
+- 1 = period observed after the event
 
 $\beta1DT$ = Dummy de Tratamento
-- 0 = não recebeu o tratamento
-- 1 = recebeu o tratamento
+- 0 = did not receive treatment
+- 1 = received the treatment
 
-$\delta1 D * DT$ = Dummy de Interação (diferença de receber e não receber o tratamento = DID)
+$\delta1 D * DT$ = Interaction Dummy (difference between receiving and not receiving the treatment = DID)
 
 Descrição das variáveis: 
-- y85 -> dummy pós-evento
-- female e educ -> dummy de tratamento
-- y85educ e y85fem -> dummy de interação
+- y85 -> post-event dummy
+- female e educ -> treatment dummy
+- y85educ e y85fem -> interaction dummy
 
 ```r
 reg lwage y85 female exper expersq y85fem
