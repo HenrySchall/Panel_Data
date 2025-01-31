@@ -1,193 +1,185 @@
-# Dados em Painel
-> A estimação de dados em painel é a analise de dados que possuem uma estrutura de dois fatores, ou seja temos um fator que representa diferentes unidades (como indivíduos, empresas, países, etc.) e outro que representa diferentes períodos de tempo. Esse documento procura demonstrar o processo de estimação de dados em painel, usando como base o livro: "*Econometric Analysis of Cross Section and Panel Data, Second Edition, de Jeffrey M. Wooldridge*". Todas as bases utilizadas nesse código podem ser encontradas nesse repositório, para quaisquer dúvidas consultar a obra referenciada.
+# Panel Data
+> Panel data estimation is the analysis of data that have a two-factor structure, i.e., we have one factor that represents different units (such as individuals, companies, countries, etc.) and another that represents different time periods. This document seeks to demonstrate the process of panel data estimation, using as a basis the book: "*Econometric Analysis of Cross Section and Panel Data, Second Edition, by Jeffrey M. Wooldridge*". All the bases used in this code can be found in this repository, for any questions consult the referenced work.
 
-### Características Gerais
-- Heterogeneidade das unidades: Cada unidade (indivíduo, empresa, país, etc.) pode ter características próprias que não variam ao longo do tempo.
-- Variabilidade temporal: As variáveis podem mudar ao longo do tempo para cada unidade.
-- Estrutura longitudinal: A presença de múltiplas observações para cada unidade permite analisar tanto a variabilidade dentro das unidades quanto entre elas.
+### General Characteristics
+- Heterogeneity of units: Each unit (individual, company, country, etc.) may have its own characteristics that do not vary over time.
+- Temporal variability: Variables may change over time for each unit.
+- Longitudinal structure: The presence of multiple observations for each unit allows the analysis of both variability within and between units.
 
-> Podemos dizer que Dados em Painel subdivide-se em dois tipos: Painel Verdadeiro e Agrupadamento de Cortes Transversais. Quando temos um Painel Verdadeiro usa-se a mesma unidade de análise ao longo do tempo (todos os "is" são iguais), ou seja, em uma pesquisa por exemplo os dados serão sobre os mesmos inddvíduos ao longo do tempo. Já um Agrupadamento de Cortes Transversais os "is" não serão os mesmos entre os períodos, ou seja, em uma pesquisa os dados não serão dos mesmos indivíduos. 
+> We can say that Panel Data is subdivided into two types: True Panel and Cross-Section Clustering. When we have a True Panel, the same unit of analysis is used over time (all the "i"s are the same), that is, in a survey, for example, the data will be about the same individuals over time. In a Cross-Section Clustering, the "i"s will not be the same between periods, that is, in a survey the data will not be about the same individuals.
 
-### Modelos de Dados em Painel
-1) Modelo de Agrupamento Cortes Transversais (Pooled Cross Section)
-2) Modelo de Efeitos Fixos (FE) 
-3) Modelo de Efeitos Aleatórios (RE)
-4) Modelo de Efeitos Dinâmicos (GMM)
+### Panel Data Models
+1) Pooled Cross Section Model
+2) Fixed Effects Model (FE) 
+3) Random Effects Model (RE)
+4) Dynamic Effects Model (GMM)
 
-### Equação Geral 
+### General Equation
 $Yit = \beta0 + + \beta1Xit + \beta2Xit + eit$
 
-- i = unidades específicas
-- t = tempo
+- i = specific units
+- t = time
 
-## Pooled Cross Section (Agrupadamento de Cortes Transversais)
+## Pooled Cross Section
 
-#### 1º Primeiro Exemplo 
+#### 1º First Example
 
-Carregar Base -> FERTIL1.DTA (número de filhos por mulher entre os anos 1974 e 1984)
+Load Base -> FERTIL1.DTA (number of children per woman between 1974 and 1984)
 
 ```r
-# Criando variável sugerida pelo autor
+# Creating variable suggested by the author
 gen age2=age^2
 ```
-> Primeiro passo é identificar se temos um Painel Verdadeiro ou um Pooled Cross Section, para isso precisamos descobrir quantas observações temos em cada período.
+> The first step is to identify whether we have a True Panel or a Pooled Cross Section, for this we need to find out how many observations we have in each period.
 
 ```r
 sort year
 ```
 ```r
-#kids variável dependente
+#kids dependent variable
 by year: tab kids
 ```
-![3](https://github.com/HenrySchall/Panel_Data/assets/96027335/a2594bbc-866b-4937-b75d-da9adafeeef8)
 
-> Pegando os anos de 72 e 74 como exemplo. Podemos ver que no ano de 72, obtivemos 156 entrevistas 
-e no ano de 74 obtivemos 173 entrevistadas, evidenciando que os dados não são os mesmos para cada período, temos então um Pooled Cross Section.
+> Taking the years 72 and 74 as an example, we can see that in the year 72, we obtained 156 interviews and in the year 74 we obtained 173 interviewees, showing that the data is not the same for each period, so we have a Pooled Cross Section.
 
 ```r
-# Fazendo a regressão por MQO Agrupado 
+# Regression by Grouped OLS
 reg kids educ age age2 black east northcen west farm othrural town smcity y74 y76 y78 y80 y82 y84
 ```
-![4](https://github.com/HenrySchall/Panel_Data/assets/96027335/39a5c91b-f6e0-48f3-9982-8920927dc635)
+![Captura de tela 2025-01-31 004918](https://github.com/user-attachments/assets/8dd033e8-d737-4d90-8be3-1c1f93b36de2)
 
-Descrição das variáveis: 
-- educ = É significativa e possui efeito *negativo* na variável dependente, ou seja, mulheres mais educadas, controlado pelas outras variáveis, tem menos filhos ou o aumento de uma unidade na variável educação, controlado pelos outros fatores, levá a uma diminuição de 14,28% nos níveis de fecundidade. 
-- age = É significativa e possui efeito *positivo* na variável dependente
-- age2 = É significativa e possui efeito negativo na variável dependente
-- black = É significativa e possui efeito positivo na variável dependente
-- east = É significativa e possui efeito positivo na variável dependente
-- northcen = É significativa e possui efeito positivo na variável dependente
-- west = Não é significativa
-- farm = Não é significativa
-- othrural = Não é significativa
-- town = Não é significativa
-- smcity = Não é significativa
-- y74 = Não significativa e possui efeito *positivo*
-- y76 = Não significativa e possui efeito negativo
-- y78 = Não significativa e possui efeito negativo
-- y80 = Não significativa e possui efeito negativo
-- y82 = Significativa e possui efeito negativo
-- y84 = Significativa e possui efeito negativo
+Description of variables:
+- educ = It is significant and has a *negative* effect on the dependent variable, that is, more educated women, controlled by the other variables, have fewer children or an increase of one unit in the education variable, controlled by the other factors, leads to a decrease of 14.28% in fertility levels. - age = Significant and has a *positive* effect on the dependent variable
+- age2 = Significant and has a negative effect on the dependent variable
+- black = Significant and has a positive effect on the dependent variable
+- east = Significant and has a positive effect on the dependent variable
+- northcen = Significant and has a positive effect on the dependent variable
+- west = Not significant
+- farm = Not significant
+- othrural = Not significant
+- town = Not significant
+- smcity = Not significant
+- y74 = Not significant and has a *positive* effect
+- y76 = Not significant and has a negative effect
+- y78 = Not significant and has a negative effect
+- y80 = Not significant and has a negative effect
+- y82 = Significant and has a negative effect
+- y84 = Significant and has a negative effect
 
-Observe que:
-- Temos 1.129 observações
-- Nosso modelo é significativo, porque temos Prob > F = 0.0000 . Todavia, nem todas nossas variáveis são
-significativas ao nível de significância de 10%.
-- Como as dummies de y74,y76,y78,80 são não significativas, ou seja, controlado pelos outros fatores, a fecundidade desses anos é estatisticamente igual a de y72.
-- Podemos ver que as dummies y82 e y84 são significativas e negativas, ou seja, controlado pelos outros fatores, existe uma tendência de longo prazo na queda de fecundidade e essa queda é de aproximadamente de (0.522 - 0.545 = -0,023 filhos).
+Note that:
+- We have 1,129 observations
+- Our model is significant, because we have Prob > F = 0.0000 . However, not all of our variables are significant at the 10% significance level. - Since the dummies y74, y76, y78, 80 are not significant, that is, controlled by the other factors, the fertility of these years is statistically equal to that of y72. - We can see that the dummies y82 and y84 are significant and negative, that is, controlled by the other factors, there is a long-term trend in the decline of fertility and this decline is approximately (0.522 - 0.545 = -0.023 children).
 
-#### 2º Segundo Exemplo
+#### 2º Second Example
 
-Carregar base -> CPS78_85.DTA (Valor dos salários de 1978 e 1985)
+Load base -> CPS78_85.DTA (Value of salaries of 1978 and 1985)
 
 ```r
 sum
 ```
-![5](https://github.com/HenrySchall/Panel_Data/assets/96027335/61fc84b2-87a4-4f35-a41b-02861b481e67)
+![Captura de tela 2025-01-31 004210](https://github.com/user-attachments/assets/9180194b-1906-4823-b3e8-301ab0bb09e8)
 
 ```r
 tab year
 ```
-![6](https://github.com/HenrySchall/Panel_Data/assets/96027335/93821b32-99df-4846-91cb-3a1fd2b66f41)
+![Captura de tela 2025-01-31 004227](https://github.com/user-attachments/assets/6686be41-e9d4-434e-8893-a7ed823ac6b1)
 
 ```
 reg lwage educ exper expersq union female
 ```
-![7](https://github.com/HenrySchall/Panel_Data/assets/96027335/7a8054bd-676b-4ddb-b294-4f10a9aa41fa)
+![Captura de tela 2025-01-31 004242](https://github.com/user-attachments/assets/a8b78595-8231-4f53-ad23-bfb0edabcd94)
 
-- Nosso modelo é significativo, porque temos Prob > F = 0.0000 e todas as variáveis são significativas estatisticamente (P>|t| = 0.000).
-- Pegando a variável educ como exemplo, podemos dizer que o aumento de 1 ano de educação, controlado pelos outros fatores, leva ao aumento de salário de aproximadamente 8,84%.
-- Pegando a variável female como exemplo, podemos dizer que o fato de ser mulher, controlado pelos outros fatores, leva a uma diminuição de salário de aproximadamente 25,08%.
+- Our model is significant because we have Prob > F = 0.0000 and all variables are statistically significant (P>|t| = 0.000).
+- Taking the variable educ as an example, we can say that an increase of 1 year of education, controlled by the other factors, leads to a salary increase of approximately 8.84%.
+- Taking the variable female as an example, we can say that the fact of being a woman, controlled by the other factors, leads to a salary decrease of approximately 25.08%.
 
-> Entretanto qual o efeito real sobre os salários entre 1978 e 1985, levando em conta os fatores educação e ser mulher. Ouve aumento ou diminuição no salário de 1978 em relação a 1985? No exemplo anterior realizamos a diferença entre as dummies y82 e y84, para encontrar esse efeito real, todavia uma alternativa seria utilizar-se do Estimador de Diferenças em Diferenças (DID).
+> However, what is the real effect on salaries between 1978 and 1985, taking into account the factors education and being a woman. Was there an increase or decrease in salary from 1978 in relation to 1985? In the previous example, we performed the difference between the dummies y82 and y84, to find this real effect, however an alternative would be to use the Difference-in-Differences Estimator (DID).
 
-### Estimador de diferença em diferenças (DID)
-> Ele é uma alternativa ao Estimador MQO Agrupado, utiliza-se ele quando queremos capturar o efeito antes e depois de um evento, ou seja, de uma mudança especifica nos dados. Sua lógica é semelhante aos testes farmacêuticos, onde seleciona-se uma população amostral, no qual uma parte dessa população recebe um tratamento (grupo de tratamento) de um certo processo natural, enquanto à outra parte dessa população não recebe o tratamento (grupo de controle). Dado pela seguinte equação:
+### Difference-in-Differences (DID) Estimator
+> This is an alternative to the Pooled OLS Estimator. It is used when we want to capture the effect before and after an event, that is, of a specific change in the data. Its logic is similar to pharmaceutical tests, where a sample population is selected, in which part of this population receives a treatment (treatment group) of a certain natural process, while the other part of this population does not receive the treatment (control group). Given by the following equation:
 
 $Yit = \beta0 +\delta0D + \beta1DT + \delta1 D * DT + eit$
 
 Onde:
 
-$\delta0D$ = Dummy pós-evento 
-- 0 = período observado anterior ao evento 
-- 1 = período observado após o evento
+$\delta0D$ = Post-event dummy
+- 0 = period observed prior to the event
+- 1 = period observed after the event
 
-$\beta1DT$ = Dummy de Tratamento
-- 0 = não recebeu o tratamento
-- 1 = recebeu o tratamento
+$\beta1DT$ = Treatment Dummy
+- 0 = did not receive treatment
+- 1 = received the treatment
 
-$\delta1 D * DT$ = Dummy de Interação (diferença de receber e não receber o tratamento = DID)
+$\delta1 D * DT$ = Interaction Dummy (difference between receiving and not receiving the treatment = DID)
 
-Descrição das variáveis: 
-- y85 -> dummy pós-evento
-- female e educ -> dummy de tratamento
-- y85educ e y85fem -> dummy de interação
+Description of variables:
+- y85 -> post-event dummy
+- female e educ -> treatment dummy
+- y85educ e y85fem -> interaction dummy
 
 ```r
 reg lwage y85 female exper expersq y85fem
 ```
-![01](https://github.com/HenrySchall/Panel_Data/assets/96027335/830acadc-3543-4a99-ba51-52e274ce0b31)
+![Captura de tela 2025-01-31 010313](https://github.com/user-attachments/assets/1c1b78b9-7198-4902-9b04-baee485fb123)
 
 ```r
 reg lwage y85 educ exper expersq y85educ
 ```
-![02](https://github.com/HenrySchall/Panel_Data/assets/96027335/4a37671d-9641-4cc6-9f39-047c42ab6b22)
+![2](https://github.com/user-attachments/assets/8f1720c8-10d6-41e4-bf58-35b1e1ba156c)
 
 ```r
-# Podemos analisar os dois efeitos em conjunto, diminuindo possível multicolinealidade e aumentando os graus de liberade do modelo
+# We can analyze both effects together, reducing possible multicollinearity and increasing the model's degrees of freedom.
 reg lwage y85 educ y85educ exper expersq union female y85fem
 ```
-![03](https://github.com/HenrySchall/Panel_Data/assets/96027335/1c141c26-d495-4e66-9375-25820dc458fe)
+![3](https://github.com/user-attachments/assets/9413607c-1f57-4947-98a2-0ae9facc72b9)
 
-- A dummy de y85 não é significativa, ou seja, controlado pelos outros fatores os salários de y78 e y85 são estatisticamente iguais.
+- The dummy for y85 is not significant, i.e., controlled by the other factors, the salaries of y78 and y85 are statistically equal.
 
-- Analisando à variável educ e y85educ. Temos que o aumento de 1 ano de estudo em y78, aumenta os salários em 7,47%, controlado pelos outros fatores. Além disso, no ano de y85 esse efeito é 1,85% maior (7,47% - 8,50% = 1,85%), ou seja, aumento do efeito de um ano para o outro)
+- Analyzing the variable educ and y85educ. We have that the increase of 1 year of study in y78, increases the salaries by 7.47%, controlled by the other factors. Furthermore, in the year y85 this effect is 1.85% greater (7.47% - 8.50% = 1.85%), i.e., an increase in the effect from one year to the next).
 
-- Analisando à variável female e y85fem. Temos que diferença salarial em y78, é de -31,67%, controlado pelos outros fatores. Além disso, no ano de y85 esse efeito é 8,50% menor (31,67% - 8,50% = -23,17%), ou seja, diminuição do efeito de um ano para o outro).
-
-#### 3º Terceiro Exemplo 
-
-Carregar Base -> KIELMC.DTA (Efeito da instalação de um incinerador de lixo no preço dos imóveis em uma região de Massachusetts)
+- Analyzing the variable female and y85fem. We have that the salary difference in y78, is -31.67%, controlled by the other factors. Furthermore, in the year y85 this effect is 8.50% smaller (31.67% - 8.50% = -23.17%), i.e., a decrease in the effect from one year to the next).
+  
+#### 3rd Third Example
+Load Base -> KIELMC.DTA (Effect of installing a garbage incinerator on real estate prices in a region of Massachusetts)
 
 ```r
 tab year
+#Noted that I do not have a true data panel
 ```
-![1](https://github.com/HenrySchall/Panel-Data/assets/96027335/565abfdf-50d8-4dac-987b-ee32c129b375)
-
-> Observa-se que não tenho um painel de dados verdadeiro
+![Captura de tela 2025-01-31 011359](https://github.com/user-attachments/assets/8d31862d-d239-4016-99ff-95a968d25fec)
 
 ```r
 sum
 ```
-![2](https://github.com/HenrySchall/Panel-Data/assets/96027335/9f5fdf1a-8e46-4bb9-a8e1-7d8e842ce0d2)
+![Captura de tela 2025-01-31 011412](https://github.com/user-attachments/assets/5fc7447f-aec2-488a-8890-d2c331fc35c2)
 
 ```r
-#nearinc = dummy de localização
+#nearinc = Location dummy
 reg rprice nearinc if year==1981
 ```
-![3](https://github.com/HenrySchall/Panel-Data/assets/96027335/f849407f-049c-43fe-a715-552934949a35)
+![Captura de tela 2025-01-31 011512](https://github.com/user-attachments/assets/08c64f00-7255-49c9-9a31-76ede825ee33)
 
-> Nosso modelo será significativo do ponto de vista global e a nossa variável nearinc é significativa e negativa, ou seja, em 81, os imóveis que estão localizados próximos do centro de tratamento de lixo possuem preços menores, em média US$30.688, que os imóveis afastados do centro de tratamento de lixo. Todavia será que essa diferença é causada pelo centro de tratamento de lixo?
+> Our model will be significant from a global point of view and our variable nearinc is significant and negative, that is, in 81, the properties that are located close to the waste treatment center have lower prices, on average US$30,688, than the properties far from the waste treatment center. However, is this difference caused by the waste treatment center?
 
 ```r
 reg rprice nearinc if year==1978
 ```
-![4](https://github.com/HenrySchall/Panel-Data/assets/96027335/98e48306-ea46-4b58-9ac7-10200695c592)
+![Captura de tela 2025-01-31 011757](https://github.com/user-attachments/assets/a3b79df0-7964-4092-86cb-e2db29d8d361)
 
-- Observa-se que a resposta é  __*Não*__. Porque vemos o mesmo efeito em 78, muito antes da instalação do centro de tratamento de lixo. Sendo assim os preço são mais baixos porque muito possívelmente estamos analisando uma região menos privilegiada da cidade.
-- Então o efeito real da instalação do centro de tratamento de lixo, será a diferença entre as dummies y81 e y78 (18.824 - 30.688 = US$11.864), que seria o mesmo que estimar usando estimador DID
+- It is observed that the answer is __*No*__. Because we see the same effect in 78, long before the installation of the waste treatment center. Therefore, the prices are lower because we are most likely analyzing a less privileged region of the city.
+- So the real effect of the installation of the waste treatment center will be the difference between the dummies y81 and y78 (18,824 - 30,688 = US$11,864), which would be the same as estimating using the DID estimator
 
 ```r
-# usando estimador DID
+# using DID estimator
 reg rprice y81 nearinc y81nrinc
 ```
-![124](https://github.com/HenrySchall/Panel-Data/assets/96027335/1163ddd9-932e-412a-b33e-7ca105269504)
+![Captura de tela 2025-01-31 011812](https://github.com/user-attachments/assets/46db87e5-5c50-418a-9f46-478d6d83d8da)
 
 ```r
-# adicionando mais variáveis explciativas (sugestão do autor)
+# adding more explanatory variables (author's suggestion)
 reg rprice y81 nearinc y81nrinc age agesq intst land area rooms baths
 ```
-![6](https://github.com/HenrySchall/Panel-Data/assets/96027335/aa708ee2-8dcf-422f-a54c-d92f5fcb3f30)
+![Captura de tela 2025-01-31 012150](https://github.com/user-attachments/assets/9a1158dd-2446-421d-8c5a-d1fa6c133a3e)
 
 #### 4º Quarto Exemplo
 Carregar Base -> INJURY.DTA (Em julho de 1980 havia um limite para recebimento de auxilio compensação por acidente de trabalho em relação a renda dos indivíduos, sendo que indivíudos com renda superior ao limite não recebiam compensação. Após julho de 82, esse limite foi elevado)
