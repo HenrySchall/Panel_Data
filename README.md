@@ -164,22 +164,22 @@ reg rprice nearinc if year==1981
 ```r
 reg rprice nearinc if year==1978
 ```
-![4](https://github.com/HenrySchall/Panel-Data/assets/96027335/98e48306-ea46-4b58-9ac7-10200695c592)
+![Captura de tela 2025-01-31 011757](https://github.com/user-attachments/assets/a3b79df0-7964-4092-86cb-e2db29d8d361)
 
-- Observa-se que a resposta é  __*Não*__. Porque vemos o mesmo efeito em 78, muito antes da instalação do centro de tratamento de lixo. Sendo assim os preço são mais baixos porque muito possívelmente estamos analisando uma região menos privilegiada da cidade.
-- Então o efeito real da instalação do centro de tratamento de lixo, será a diferença entre as dummies y81 e y78 (18.824 - 30.688 = US$11.864), que seria o mesmo que estimar usando estimador DID
+- It is observed that the answer is __*No*__. Because we see the same effect in 78, long before the installation of the waste treatment center. Therefore, the prices are lower because we are most likely analyzing a less privileged region of the city.
+- So the real effect of the installation of the waste treatment center will be the difference between the dummies y81 and y78 (18,824 - 30,688 = US$11,864), which would be the same as estimating using the DID estimator
 
 ```r
-# usando estimador DID
+# using DID estimator
 reg rprice y81 nearinc y81nrinc
 ```
-![124](https://github.com/HenrySchall/Panel-Data/assets/96027335/1163ddd9-932e-412a-b33e-7ca105269504)
+![Captura de tela 2025-01-31 011812](https://github.com/user-attachments/assets/46db87e5-5c50-418a-9f46-478d6d83d8da)
 
 ```r
-# adicionando mais variáveis explciativas (sugestão do autor)
+# adding more explanatory variables (author's suggestion)
 reg rprice y81 nearinc y81nrinc age agesq intst land area rooms baths
 ```
-![6](https://github.com/HenrySchall/Panel-Data/assets/96027335/aa708ee2-8dcf-422f-a54c-d92f5fcb3f30)
+![Captura de tela 2025-01-31 012150](https://github.com/user-attachments/assets/9a1158dd-2446-421d-8c5a-d1fa6c133a3e)
 
 #### 4º Quarto Exemplo
 Carregar Base -> INJURY.DTA (Em julho de 1980 havia um limite para recebimento de auxilio compensação por acidente de trabalho em relação a renda dos indivíduos, sendo que indivíudos com renda superior ao limite não recebiam compensação. Após julho de 82, esse limite foi elevado)
