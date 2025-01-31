@@ -102,17 +102,17 @@ $Yit = \beta0 +\delta0D + \beta1DT + \delta1 D * DT + eit$
 
 Onde:
 
-$\delta0D$ = Dummy pós-evento 
+$\delta0D$ = Post-event dummy
 - 0 = period observed prior to the event
 - 1 = period observed after the event
 
-$\beta1DT$ = Dummy de Tratamento
+$\beta1DT$ = Treatment Dummy
 - 0 = did not receive treatment
 - 1 = received the treatment
 
 $\delta1 D * DT$ = Interaction Dummy (difference between receiving and not receiving the treatment = DID)
 
-Descrição das variáveis: 
+Description of variables:
 - y85 -> post-event dummy
 - female e educ -> treatment dummy
 - y85educ e y85fem -> interaction dummy
