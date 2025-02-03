@@ -1,4 +1,7 @@
 # Panel Data
+
+![descreva uma imagem sobre dados em painel Stata 03-02-2025 at 01-32-46](https://github.com/user-attachments/assets/d854eb66-c062-4af5-9ac6-f4e9a767e89d)
+
 > Panel data estimation is the analysis of data that have a two-factor structure, i.e., we have one factor that represents different units (such as individuals, companies, countries, etc.) and another that represents different time periods. This document seeks to demonstrate the process of panel data estimation, using as a basis the book: "*Econometric Analysis of Cross Section and Panel Data, Second Edition, by Jeffrey M. Wooldridge*". All the bases used in this code can be found in this repository, for any questions consult the referenced work.
 
 ### General Characteristics
