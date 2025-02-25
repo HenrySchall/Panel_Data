@@ -29,7 +29,7 @@ $Yit = \beta0 + + \beta1Xit + \beta2Xit + eit$
 
 Load Base -> FERTIL1.DTA (number of children per woman between 1974 and 1984)
 
-```r
+```
 # Creating variable suggested by the author
 gen age2=age^2
 ```
