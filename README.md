@@ -465,29 +465,98 @@ sum
 #nearinc = Location dummy
 reg rprice nearinc if year==1981
 ```
-![Captura de tela 2025-01-31 011512](https://github.com/user-attachments/assets/08c64f00-7255-49c9-9a31-76ede825ee33)
+```
+# nearinc = Location dummy
+
+      Source |       SS           df       MS      Number of obs   =       142
+-------------+----------------------------------   F(1, 140)       =     27.73
+       Model |  2.7059e+10         1  2.7059e+10   Prob > F        =    0.0000
+    Residual |  1.3661e+11       140   975815048   R-squared       =    0.1653
+-------------+----------------------------------   Adj R-squared   =    0.1594
+       Total |  1.6367e+11       141  1.1608e+09   Root MSE        =     31238
+
+------------------------------------------------------------------------------
+      rprice | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+     nearinc |  -30688.27   5827.709    -5.27   0.000    -42209.97   -19166.58
+       _cons |   101307.5   3093.027    32.75   0.000     95192.43    107422.6
+```
 
 > Our model will be significant from a global point of view and our variable nearinc is significant and negative, that is, in 81, the properties that are located close to the waste treatment center have lower prices, on average US$30,688, than the properties far from the waste treatment center. However, is this difference caused by the waste treatment center?
 
-```r
+```
 reg rprice nearinc if year==1978
 ```
-![Captura de tela 2025-01-31 011757](https://github.com/user-attachments/assets/a3b79df0-7964-4092-86cb-e2db29d8d361)
+```
+      Source |       SS           df       MS      Number of obs   =       179
+-------------+----------------------------------   F(1, 177)       =     15.74
+       Model |  1.3636e+10         1  1.3636e+10   Prob > F        =    0.0001
+    Residual |  1.5332e+11       177   866239953   R-squared       =    0.0817
+-------------+----------------------------------   Adj R-squared   =    0.0765
+       Total |  1.6696e+11       178   937979126   Root MSE        =     29432
+
+------------------------------------------------------------------------------
+      rprice | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+     nearinc |  -18824.37   4744.594    -3.97   0.000    -28187.62   -9461.117
+       _cons |   82517.23    2653.79    31.09   0.000     77280.09    87754.37
+------------------------------------------------------------------------------
+```
 
 - It is observed that the answer is __*No*__. Because we see the same effect in 78, long before the installation of the waste treatment center. Therefore, the prices are lower because we are most likely analyzing a less privileged region of the city.
 - So the real effect of the installation of the waste treatment center will be the difference between the dummies y81 and y78 (18,824 - 30,688 = US$11,864), which would be the same as estimating using the DID estimator
 
-```r
-# using DID estimator
+```
 reg rprice y81 nearinc y81nrinc
 ```
-![Captura de tela 2025-01-31 011812](https://github.com/user-attachments/assets/46db87e5-5c50-418a-9f46-478d6d83d8da)
+```
+# Using DID estimator
 
-```r
-# adding more explanatory variables (author's suggestion)
+      Source |       SS           df       MS      Number of obs   =       321
+-------------+----------------------------------   F(3, 317)       =     22.25
+       Model |  6.1055e+10         3  2.0352e+10   Prob > F        =    0.0000
+    Residual |  2.8994e+11       317   914632739   R-squared       =    0.1739
+-------------+----------------------------------   Adj R-squared   =    0.1661
+       Total |  3.5099e+11       320  1.0969e+09   Root MSE        =     30243
+
+------------------------------------------------------------------------------
+      rprice | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         y81 |   18790.29   4050.065     4.64   0.000     10821.88    26758.69
+     nearinc |  -18824.37   4875.322    -3.86   0.000    -28416.45   -9232.293
+    y81nrinc |   -11863.9   7456.646    -1.59   0.113    -26534.67    2806.867
+       _cons |   82517.23    2726.91    30.26   0.000      77152.1    87882.36
+------------------------------------------------------------------------------
+```
+```
 reg rprice y81 nearinc y81nrinc age agesq intst land area rooms baths
 ```
-![Captura de tela 2025-01-31 012150](https://github.com/user-attachments/assets/9a1158dd-2446-421d-8c5a-d1fa6c133a3e)
+```
+# Adding more explanatory variables (author's suggestion)
+
+      Source |       SS           df       MS      Number of obs   =       321
+-------------+----------------------------------   F(10, 310)      =     60.19
+       Model |  2.3167e+11        10  2.3167e+10   Prob > F        =    0.0000
+    Residual |  1.1932e+11       310   384905860   R-squared       =    0.6600
+-------------+----------------------------------   Adj R-squared   =    0.6491
+       Total |  3.5099e+11       320  1.0969e+09   Root MSE        =     19619
+
+------------------------------------------------------------------------------
+      rprice | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         y81 |   13928.48   2798.747     4.98   0.000     8421.533    19435.42
+     nearinc |   3780.337   4453.415     0.85   0.397    -4982.408    12543.08
+    y81nrinc |  -14177.93   4987.267    -2.84   0.005    -23991.11   -4364.759
+         age |   -739.451   131.1272    -5.64   0.000    -997.4629   -481.4391
+       agesq |    3.45274   .8128214     4.25   0.000     1.853395    5.052084
+       intst |  -.5386352   .1963359    -2.74   0.006    -.9249548   -.1523157
+        land |   .1414196   .0310776     4.55   0.000     .0802698    .2025693
+        area |   18.08621   2.306064     7.84   0.000     13.54869    22.62373
+       rooms |   3304.227   1661.248     1.99   0.048     35.47904    6572.974
+       baths |   6977.317   2581.321     2.70   0.007     1898.191    12056.44
+       _cons |   13807.67   11166.59     1.24   0.217    -8164.239    35779.57
+------------------------------------------------------------------------------
+```
 
 #### 4º Quarto Exemplo
 Carregar Base -> INJURY.DTA (Em julho de 1980 havia um limite para recebimento de auxilio compensação por acidente de trabalho em relação a renda dos indivíduos, sendo que indivíudos com renda superior ao limite não recebiam compensação. Após julho de 82, esse limite foi elevado)
