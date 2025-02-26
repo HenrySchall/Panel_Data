@@ -38,11 +38,9 @@ gen age2=age^2
 ```
 sort year
 ```
-
 ```
 by year: tab kids
 ```
-
 ```
 # kids dependent variable
 --------------------------------------------------------------------------------------
@@ -164,13 +162,11 @@ by year: tab kids
 ------------+-----------------------------------
       Total |        177      100.00
 ```
-
 > Taking the years 72 and 74 as an example, we can see that in the year 72, we obtained 156 interviews and in the year 74 we obtained 173 interviewees, showing that the data is not the same for each period, so we have a Pooled Cross Section.
 
 ```
 reg kids educ age age2 black east northcen west farm othrural town smcity y74 y76 y78 y80 y82 y84
 ```
-
 ```
 # Regression by Grouped OLS
 
@@ -204,7 +200,6 @@ reg kids educ age age2 black east northcen west farm othrural town smcity y74 y7
        _cons |  -7.742457   3.051767    -2.54   0.011    -13.73033   -1.754579
 ------------------------------------------------------------------------------
 ```
-
 Description of variables:
 - educ = It is significant and has a *negative* effect on the dependent variable, that is, more educated women, controlled by the other variables, have fewer children or an increase of one unit in the education variable, controlled by the other factors, leads to a decrease of 14.28% in fertility levels. - age = Significant and has a *positive* effect on the dependent variable
 - age2 = Significant and has a negative effect on the dependent variable
@@ -234,7 +229,6 @@ Load base -> CPS78_85.DTA (Value of salaries of 1978 and 1985)
 ```
 sum
 ```
-
 ```
    Variable |        Obs        Mean    Std. dev.       Min        Max
 -------------+---------------------------------------------------------
@@ -267,11 +261,9 @@ tab year
 ------------+-----------------------------------
       Total |      1,084      100.00
 ```
-
 ```
 reg lwage educ exper expersq union female
 ```
-
 ```
 
       Source |       SS           df       MS      Number of obs   =     1,084
@@ -292,7 +284,6 @@ reg lwage educ exper expersq union female
        _cons |   .4428074   .0828303     5.35   0.000     .2802805    .6053344
 ------------------------------------------------------------------------------
 ```
-
 - Our model is significant because we have Prob > F = 0.0000 and all variables are statistically significant (P>|t| = 0.000).
 - Taking the variable educ as an example, we can say that an increase of 1 year of education, controlled by the other factors, leads to a salary increase of approximately 8.84%.
 - Taking the variable female as an example, we can say that the fact of being a woman, controlled by the other factors, leads to a salary decrease of approximately 25.08%.
@@ -324,7 +315,6 @@ Description of variables:
 ```
 reg lwage y85 female exper expersq y85fem
 ```
-
 ```
       Source |       SS           df       MS      Number of obs   =     1,084
 -------------+----------------------------------   F(5, 1078)      =     75.16
@@ -344,11 +334,9 @@ reg lwage y85 female exper expersq y85fem
        _cons |    1.47623   .0428719    34.43   0.000     1.392108    1.560352
 ------------------------------------------------------------------------------
 ```
-
 ```
 reg lwage y85 educ exper expersq y85educ
 ```
-
 ```
       Source |       SS           df       MS      Number of obs   =     1,084
 -------------+----------------------------------   F(5, 1078)      =    105.79
@@ -368,12 +356,9 @@ reg lwage y85 educ exper expersq y85educ
        _cons |   .4416655   .0993411     4.45   0.000     .2467418    .6365893
 ------------------------------------------------------------------------------
 ```
-
-
 ```
 reg lwage y85 educ y85educ exper expersq union female y85fem
 ```
-
 ```
 # We can analyze both effects together, reducing possible multicollinearity and increasing the model's degrees of freedom.
 
@@ -411,7 +396,6 @@ Load Base -> KIELMC.DTA (Effect of installing a garbage incinerator on real esta
 ```
 tab year
 ```
-
 ```
 # Noted that I do not have a true data panel
 
@@ -423,7 +407,6 @@ tab year
 ------------+-----------------------------------
       Total |        321      100.00
 ```
-
 ```
 sum
 ```
@@ -460,7 +443,6 @@ sum
       rprice |        321    83721.36    33118.79      26000     300000
      lrprice |        321    11.26138    .3878996   10.16585   12.61154
 ```
-
 ```
 #nearinc = Location dummy
 reg rprice nearinc if year==1981
@@ -481,7 +463,6 @@ reg rprice nearinc if year==1981
      nearinc |  -30688.27   5827.709    -5.27   0.000    -42209.97   -19166.58
        _cons |   101307.5   3093.027    32.75   0.000     95192.43    107422.6
 ```
-
 > Our model will be significant from a global point of view and our variable nearinc is significant and negative, that is, in 81, the properties that are located close to the waste treatment center have lower prices, on average US$30,688, than the properties far from the waste treatment center. However, is this difference caused by the waste treatment center?
 
 ```
@@ -561,7 +542,7 @@ reg rprice y81 nearinc y81nrinc age agesq intst land area rooms baths
 #### 4º Quarto Exemplo
 Carregar Base -> INJURY.DTA (Em julho de 1980 havia um limite para recebimento de auxilio compensação por acidente de trabalho em relação a renda dos indivíduos, sendo que indivíudos com renda superior ao limite não recebiam compensação. Após julho de 82, esse limite foi elevado)
 
-```R
+```
 reg ldurat afchnge highearn afhigh
 ```
 Descrição das variáveis: 
@@ -569,15 +550,52 @@ Descrição das variáveis:
 - highearn = dummy de tratamento (1 = Individuos com renda acima do limite da legislação antiga e 0 = caso contrário)
 - afhigh = dummy de interação
 
-![01](https://github.com/HenrySchall/Panel-Data/assets/96027335/a39ed94c-61fc-4687-9b7f-e2f56cacaf6b)
+```
+      Source |       SS           df       MS      Number of obs   =     7,150
+-------------+----------------------------------   F(3, 7146)      =     38.34
+       Model |  193.919855         3  64.6399516   Prob > F        =    0.0000
+    Residual |  12047.1908     7,146  1.68586493   R-squared       =    0.0158
+-------------+----------------------------------   Adj R-squared   =    0.0154
+       Total |  12241.1107     7,149  1.71228293   Root MSE        =    1.2984
+
+------------------------------------------------------------------------------
+      ldurat | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+     afchnge |   .0236351   .0397008     0.60   0.552    -.0541902    .1014603
+    highearn |   .2151955   .0433612     4.96   0.000     .1301948    .3001963
+      afhigh |   .1883498    .062794     3.00   0.003      .065255    .3114445
+       _cons |   1.199336   .0271091    44.24   0.000     1.146194    1.252478
+------------------------------------------------------------------------------
+```
 
 - afchnge = é não significativa e positiva, controlado pelos outros fatores, pós nova legislação não há mudança na duração do afastamento para os indivíduos de renda baixa, porque os afetados são apenas os indivíduos de renda alta. 
 - afhigh = é significativa e positiva, controlado pelos outros fatores, após a mudança da legislação, os indivíduos que tinham renda mais alta (não eram contemplados pela compensação) passaram à se afastar um período muito maior, cerca de 18% no tempo de duração de afastamento.
 
-```R
+```
 reg ldurat afchnge highearn afhigh male married indust injtype
 ```
-![02](https://github.com/HenrySchall/Panel-Data/assets/96027335/6bd6cd21-9abb-4b20-a372-d7e11254c69a)
+```
+
+      Source |       SS           df       MS      Number of obs   =     6,824
+-------------+----------------------------------   F(7, 6816)      =     21.03
+       Model |  244.707976         7  34.9582823   Prob > F        =    0.0000
+    Residual |  11329.2752     6,816  1.66215892   R-squared       =    0.0211
+-------------+----------------------------------   Adj R-squared   =    0.0201
+       Total |  11573.9832     6,823   1.6963188   Root MSE        =    1.2892
+
+------------------------------------------------------------------------------
+      ldurat | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+     afchnge |   .0219922     .04015     0.55   0.584    -.0567144    .1006989
+    highearn |   .1797779   .0469284     3.83   0.000     .0877835    .2717723
+      afhigh |   .2151064    .064014     3.36   0.001     .0896191    .3405938
+        male |  -.0862377   .0402554    -2.14   0.032    -.1651509   -.0073244
+     married |   .1183969   .0352929     3.35   0.001     .0492118    .1875821
+      indust |   .0338827   .0178639     1.90   0.058    -.0011361    .0689016
+     injtype |   .0353488     .01031     3.43   0.001     .0151379    .0555598
+       _cons |   .9597444   .0735133    13.06   0.000     .8156355    1.103853
+------------------------------------------------------------------------------
+```
 
 ## Painel Verdadeiro 
 > Até então todos os exemplos se tratavam de agrupamentos de cortes transversais e para esses tipos de datasets MQO Agrupado não é viesado, entretanto quando se tem um painel verdadeiro, todos os "is" serão iguais para todos os períodos, com isso se uma das das variáveis controles tiver alguma relação com as variáveis explicativas do modelo, haverá a presença de endogeneidade, ou seja, COV (Xn,e) ≠ 0. Desta forma a estimação via MQO Agrupado será viesada, sendo assim utiliza-se outra equação geral, consideando o chamado termo de erro composto. 
