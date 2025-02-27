@@ -25,7 +25,7 @@ $Yit = \beta0 + + \beta1Xit + \beta2Xit + eit$
 
 ## Pooled Cross Section
 
-#### 1º First Example
+#### 1st First Example
 Load Base -> FERTIL1.DTA (number of children per woman between 1974 and 1984)
 
 ```
@@ -221,7 +221,7 @@ Note that:
 - We have 1,129 observations
 - Our model is significant, because we have Prob > F = 0.0000 . However, not all of our variables are significant at the 10% significance level. - Since the dummies y74, y76, y78, 80 are not significant, that is, controlled by the other factors, the fertility of these years is statistically equal to that of y72. - We can see that the dummies y82 and y84 are significant and negative, that is, controlled by the other factors, there is a long-term trend in the decline of fertility and this decline is approximately (0.522 - 0.545 = -0.023 children).
 
-#### 2º Second Example
+#### 2nd Second Example
 Load base -> CPS78_85.DTA (Value of salaries of 1978 and 1985)
 
 ```
@@ -537,7 +537,7 @@ reg rprice y81 nearinc y81nrinc age agesq intst land area rooms baths
 ------------------------------------------------------------------------------
 ```
 
-#### 4º Fourth Example
+#### 4th Fourth Example
 Load base e -> INJURY.DTA (In July 1980 there was a limit for receiving compensation assistance for work accidents in relation to the income of individuals, and individuals with income above the limit did not receive compensation. After July 1982, this limit was raised)
 
 ```
