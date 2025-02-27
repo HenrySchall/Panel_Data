@@ -540,15 +540,15 @@ reg rprice y81 nearinc y81nrinc age agesq intst land area rooms baths
 ```
 
 #### 4º Quarto Exemplo
-Carregar Base -> INJURY.DTA (Em julho de 1980 havia um limite para recebimento de auxilio compensação por acidente de trabalho em relação a renda dos indivíduos, sendo que indivíudos com renda superior ao limite não recebiam compensação. Após julho de 82, esse limite foi elevado)
+Load base e -> INJURY.DTA (In July 1980 there was a limit for receiving compensation assistance for work accidents in relation to the income of individuals, and individuals with income above the limit did not receive compensation. After July 1982, this limit was raised)
 
 ```
 reg ldurat afchnge highearn afhigh
 ```
-Descrição das variáveis: 
-- afchnge = dummy pós período (1 = indivíduos afastados pós novo legislação e 0 = caso contrário)
-- highearn = dummy de tratamento (1 = Individuos com renda acima do limite da legislação antiga e 0 = caso contrário)
-- afhigh = dummy de interação
+Description of variables:
+- afchnge = post-period dummy (1 = individuals removed after new legislation and 0 = otherwise)
+- highearn = treatment dummy (1 = Individuals with income above the limit of old legislation and 0 = otherwise)
+- afhigh = interaction dummy
 
 ```
       Source |       SS           df       MS      Number of obs   =     7,150
@@ -568,14 +568,13 @@ Descrição das variáveis:
 ------------------------------------------------------------------------------
 ```
 
-- afchnge = é não significativa e positiva, controlado pelos outros fatores, pós nova legislação não há mudança na duração do afastamento para os indivíduos de renda baixa, porque os afetados são apenas os indivíduos de renda alta. 
-- afhigh = é significativa e positiva, controlado pelos outros fatores, após a mudança da legislação, os indivíduos que tinham renda mais alta (não eram contemplados pela compensação) passaram à se afastar um período muito maior, cerca de 18% no tempo de duração de afastamento.
+- afchnge = is not significant and positive, controlled by other factors, after the new legislation there is no change in the duration of absence for low-income individuals, because those affected are only high-income individuals.
+- afhigh = is significant and positive, controlled by other factors, after the change in legislation, individuals who had higher incomes (who were not covered by compensation) began to be absent for a much longer period, around 18% of the duration of absence.
 
 ```
 reg ldurat afchnge highearn afhigh male married indust injtype
 ```
 ```
-
       Source |       SS           df       MS      Number of obs   =     6,824
 -------------+----------------------------------   F(7, 6816)      =     21.03
        Model |  244.707976         7  34.9582823   Prob > F        =    0.0000
@@ -597,22 +596,22 @@ reg ldurat afchnge highearn afhigh male married indust injtype
 ------------------------------------------------------------------------------
 ```
 
-## Painel Verdadeiro 
-> Até então todos os exemplos se tratavam de agrupamentos de cortes transversais e para esses tipos de datasets MQO Agrupado não é viesado, entretanto quando se tem um painel verdadeiro, todos os "is" serão iguais para todos os períodos, com isso se uma das das variáveis controles tiver alguma relação com as variáveis explicativas do modelo, haverá a presença de endogeneidade, ou seja, COV (Xn,e) ≠ 0. Desta forma a estimação via MQO Agrupado será viesada, sendo assim utiliza-se outra equação geral, consideando o chamado termo de erro composto. 
+## True Panel
+> Until now, all examples were about cross-sectional groupings and for these types of datasets, Grouped OLS is not biased. However, when you have a true panel, all the "i"s will be the same for all periods. Therefore, if one of the control variables has any relationship with the explanatory variables of the model, there will be the presence of endogeneity, that is, COV (Xn,e) ≠ 0. In this way, the estimation via Grouped OLS will be biased, so another general equation is used, considering the so-called compound error term. 
 
-#### Equação Geral 
+#### General Equation
 $Yit = \beta0 + + \beta1Xit + \beta2Xit + Vit$
 
 $Vit = ai + uit$
 
-- Vit = termo de erro composto
-- ai = efeito fixo ou heteogeneidade não observada (aquilo que não varia no tempo)
-- uit = erro endossincrático (aquilo que varia no tempo)
+- Vit = compound error term
+- ai = fixed effect or unobserved heterogeneity (that which does not vary over time)
+- uit = endosyncratic error (that which varies over time)
+  
+> Fixed effect is something that explains Yit, being specific to i, but does not vary over the observed time horizon. Since the Pooled OLS estimator is biased, another estimator is used, the First Differences Estimator (PD).
 
-> Efeito fixo é algo que explica Yit, sendo específico de i, todavia não varia no horizonte de tempo observado. Como o estimador MQO Agrupado é viesado, passa-se a utilizar outro estimador, o Estimador de Primeiras Diferenças (PD).
-
-### Estimador de Primeiras Diferenças (PD)
-> O Estimado de Primeiras Diferenças transforma a equação original subtraindo os valores da variável dependente e das variáveis explicativas, ou seja, pega-se todos os cortes transversais de todas as observações i durante o tempo e substrai  em relação a um período anterior , removendo qualquer efeito fixo que seja constante em t. Matemáticamente falando:
+### First Differences Estimator (PD)
+> The First Differences Estimator transforms the original equation by subtracting the values ​​of the dependent variable and the explanatory variables, that is, all the cross-sections of all observations i during time are taken and subtracted in relation to a previous period, removing any fixed effect that is constant at t. Mathematically speaking:
 
 $Yi1 = (\beta0 + \delta0) + \beta1Xi1 + Vit$ (ai + uit)$
 
@@ -623,7 +622,7 @@ $(Yi2 - Yi1) = \delta0 + \beta1(Xi2 - Xi1) + (ui2 - ui1)$
 $∆Yi = \delta0 + \beta1∆Xi + ∆ui$
 
 #### 1º Primeiro Exemplo 
-Carregar Base -> CRIME2.DTA (Taxas de criminalidade para os munícipios americanos em 82 e 87). 
+Carregar Base -> CRIME2.DTA (Crime rates for US counties in 82 and 87).
 
 ```r
 tab year
