@@ -538,7 +538,7 @@ reg rprice y81 nearinc y81nrinc age agesq intst land area rooms baths
 ```
 
 #### 4th Fourth Example
-Load base e -> INJURY.DTA (In July 1980 there was a limit for receiving compensation assistance for work accidents in relation to the income of individuals, and individuals with income above the limit did not receive compensation. After July 1982, this limit was raised)
+Load base -> INJURY.DTA (In July 1980 there was a limit for receiving compensation assistance for work accidents in relation to the income of individuals, and individuals with income above the limit did not receive compensation. After July 1982, this limit was raised)
 
 ```
 reg ldurat afchnge highearn afhigh
@@ -1332,9 +1332,6 @@ corr(u_i, Xb) = -0.1212                         Prob > F          =     0.0000
      sigma_e |  .35099001
          rho |  .56612236   (fraction of variance due to u_i)
 ------------------------------------------------------------------------------
-sigma_u -> standard deviation of the fixed effect (ai)
-sigma_e -> standard deviation of the endosyncratic component (uit)
-rho -> intraclass correlation of error v (composite)
 ```
 
 ```
@@ -1386,7 +1383,6 @@ theta        = .64291089
 ##### Generate Comparison Table
 
 - OLS
-
 ```
 quietly regress lwage black hisp exper expersq union educ married d81 d82 d83 d84 d85 d86 d87, vce(cluster nr)
 ```
@@ -1475,7 +1471,18 @@ estimates table OLS FE RE, b se t stats(N r2 r2_o r2_b r2_w sigma_u sigma_e rho 
                                        Legend: b/se/t
 ```
 
-** However, how do you know which model is most suitable, for specific database? In the literature, it is suggested to use statistical tests to determine the best model, following the order proposed below:**
+Variable legend:
+- ui -> ai
+- eit -> uit
+- sigma_u -> standard deviation of the fixed effect (ai)
+- sigma_e -> standard deviation of the endosyncratic component (uit)
+- rho -> intraclass correlation of the error v (compound) or due to ai.
+- r2_o -> square of the correlation coefficient between observed and adjusted values ​​(ignoring ai) for variability in both dimensions.
+- r2_b -> square of the correlation coefficient between observed and adjusted values ​​(ignoring ai) for between-group variability.
+- r2_w -> square of the correlation coefficient between observed and adjusted values ​​(ignoring ai) for within-group variability.
+- theta -> lambda
+
+**However, how do you know which model is most suitable, for specific database? In the literature, it is suggested to use statistical tests to determine the best model, following the order proposed below:**
 
 #### Test Breusch and Pagan Lagrangian multiplier test for random effects
 
