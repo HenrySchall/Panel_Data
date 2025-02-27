@@ -1241,18 +1241,12 @@ Legenda de variáveis:
 - ui -> ai
 - eit -> uit
 
-- r2_o -> quadrado do coeficiente de correlação entre valores observados e ajustados (ignorando ai) para variabilidade nas duas dimensões.
-- r2_b -> quadrado do coeficiente de correlação entre valores observados e ajustados (ignorando ai) para variabilidade entre grupos.
-- r2_w -> quadrado do coeficiente de correlação entre valores observados e ajustados (ignorando ai) para variabilidade intra grupos.
-- theta -> lambda
-- vce(cluster nr) -> controle de heterocedasticidade
-
 ```
 reg lwage black hisp exper expersq union educ married d81 d82 d83 d84 d85 d86 d87, vce(cluster nr)
 ```
 
 ```
-Estimated GLS
+# Estimated GLS
 # vce(cluster nr) -> controle de heterocedasticidade
 Linear regression                               Number of obs     =      4,360
                                                 F(14, 544)        =      47.10
@@ -1338,9 +1332,9 @@ corr(u_i, Xb) = -0.1212                         Prob > F          =     0.0000
      sigma_e |  .35099001
          rho |  .56612236   (fraction of variance due to u_i)
 ------------------------------------------------------------------------------
-sigma_u -> desvio padrão do efeito fixo (ai)
-sigma_e -> desvio padrão do componente endiossincráico (uit)
-rho -> correlação intraclasse do erro v (composto)
+sigma_u -> standard deviation of the fixed effect (ai)
+sigma_e -> standard deviation of the endosyncratic component (uit)
+rho -> intraclass correlation of error v (composite)
 ```
 
 ```
@@ -1348,7 +1342,7 @@ xtreg lwage black hisp exper expersq union educ married d81 d82 d83 d84 d85 d86 
 ```
 
 ```
-# Efeito Aleatório (RE)
+# Random Effect (RE)
 
 Random-effects GLS regression                   Number of obs     =      4,360
 Group variable: nr                              Number of groups  =        545
@@ -1389,72 +1383,201 @@ theta        = .64291089
 ------------------------------------------------------------------------------
 ```
 
-##### Gerar Tabela Comparativa 
-```R
-# MQO
-# quietly é para não apresentar os resultados
+##### Generate Comparison Table
+
+- OLS
+
+```
 quietly regress lwage black hisp exper expersq union educ married d81 d82 d83 d84 d85 d86 d87, vce(cluster nr)
 ```
-
-```r 
+```
 estimates store OLS
 ```
 
-```R
-# Efeito Fixo (FE)
+- Fixed Effect (FE)
+```
 quietly xtreg lwage black hisp exper expersq union educ married d81 d82 d83 d84 d85 d86 d87, fe vce(cluster nr)
 ```
-
-```r
+```
 estimates store FE
 ```
-
-```R
-# Efeito Aleatório (RE)
+- Random Effect (RE)
+```
 quietly xtreg lwage black hisp exper expersq union educ married d81 d82 d83 d84 d85 d86 d87, re vce(cluster nr)
 ```
-
-```r
+```
 estimates store RE
 ```
-
-```R
-# Gerar Tabela Conjunta
+```
 estimates table OLS FE RE, b se t stats(N r2 r2_o r2_b r2_w sigma_u sigma_e rho theta)
 ```
 
-**A questão é, qual é o modelo adequado a ser usada, dado nossa base de dados? Na literatura, sugere-se o uso de testes estatísticos para determinar o melhor modelo, seguindo a ordem proposta abaixo:**
+```
+-----------------------------------------------------
+    Variable |    OLS           FE           RE      
+-------------+---------------------------------------
+       black | -.13923421    (omitted)   -.13937673  
+             |  .05052376                 .05092515  
+             |      -2.76                     -2.74  
+        hisp |  .01601951    (omitted)    .02173173  
+             |  .03907813                 .03991566  
+             |       0.41                      0.54  
+       exper |   .0672345    .13214642    .10575452  
+             |  .01959583    .01200804    .01637903  
+             |       3.43        11.00         6.46  
+     expersq |  -.0024117    -.0051855   -.00472394  
+             |   .0010252    .00081024    .00079168  
+             |      -2.35        -6.40        -5.97  
+       union |  .18246128    .08000186    .10613443  
+             |  .02744349     .0227431    .02084397  
+             |       6.65         3.52         5.09  
+        educ |  .09134979    (omitted)    .09187628  
+             |  .01108217                 .01114552  
+             |       8.24                      8.24  
+     married |  .10825295    .04668036    .06398602  
+             |    .026034    .02100382    .01897217  
+             |       4.16         2.22         3.37  
+         d81 |  .05831999    .01904479      .040462  
+             |  .02822803    .02272668    .02756841  
+             |       2.07         0.84         1.47  
+         d82 |  .06277442   -.01132198    .03092116  
+             |  .03697346     .0212167    .03507051  
+             |       1.70        -0.53         0.88  
+         d83 |  .06201174   -.04199552    .02028064  
+             |  .04624802    .02050869    .04386099  
+             |       1.34        -2.05         0.46  
+         d84 |  .09046719   -.03847088    .04311871  
+             |  .05798801    .02117215    .05558476  
+             |       1.56        -1.82         0.78  
+         d85 |   .1092463   -.04324982    .05781546  
+             |  .06684743    .01759497    .06455842  
+             |       1.63        -2.46         0.90  
+         d86 |  .14195959   -.02738194    .09194758  
+             |   .0762348    .01621806    .07470275  
+             |       1.86        -1.69         1.23  
+         d87 |  .17383343    (omitted)    .13492892  
+             |   .0852056                 .08486176  
+             |       2.04                      1.59  
+       _cons |  .09205578    1.0276395    .02358638  
+             |  .16093649     .0398919     .1599577  
+             |       0.57        25.76         0.15  
+-------------+---------------------------------------
+           N |       4360         4360         4360  
+          r2 |  .18927834    .18057757               
+        r2_o |                .0634798    .18298401  
+        r2_b |               .00045916    .18602694  
+        r2_w |               .18057757    .17992598  
+     sigma_u |                .4009279    .32460315  
+     sigma_e |               .35099001    .35099001  
+         rho |               .56612236    .46100216  
+       theta |                            .64291089  
+-----------------------------------------------------
+                                       Legend: b/se/t
+```
 
-#### Teste Breusch and Pagan Lagrangian multiplier test for random effects
+** However, how do you know which model is most suitable, for specific database? In the literature, it is suggested to use statistical tests to determine the best model, following the order proposed below:**
 
-- Hipótese nula (H0): var(ai) = 0
-- Hipótese alternativa (H1): var(ai) ≠ 0
-- A rejeição da hipótese nula indica que MQO agrupado não é o modelo apropriado, pois a estrutura de variabilidade dos erros compostos é sigma2. RE é escolha entre eles
+#### Test Breusch and Pagan Lagrangian multiplier test for random effects
 
-```R
+- Null hypothesis (H0): var(ai) = 0
+- Alternative hypothesis (H1): var(ai) ≠ 0
+- Rejection of the null hypothesis indicates that pooled OLS is not the appropriate model, as the variability structure of the compound errors is sigma2. RE is choice between them
+
+```
 xtreg lwage exper expersq union married, re vce(cluster nr) theta
 ```
+```
+Random-effects GLS regression                   Number of obs     =      4,360
+Group variable: nr                              Number of groups  =        545
 
-```R
+R-squared:                                      Obs per group:
+     Within  = 0.1766                                         min =          8
+     Between = 0.0055                                         avg =        8.0
+     Overall = 0.0734                                         max =          8
+
+                                                Wald chi2(4)      =     439.46
+corr(u_i, X) = 0 (assumed)                      Prob > chi2       =     0.0000
+theta        = .66674755
+
+                                   (Std. err. adjusted for 545 clusters in nr)
+------------------------------------------------------------------------------
+             |               Robust
+       lwage | Coefficient  std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+       exper |   .1175546   .0104012    11.30   0.000     .0971686    .1379406
+     expersq |  -.0047935   .0006536    -7.33   0.000    -.0060746   -.0035124
+       union |   .1000728   .0210756     4.75   0.000     .0587654    .1413803
+     married |   .0749106   .0193667     3.87   0.000     .0369525    .1128687
+       _cons |   1.067721   .0370905    28.79   0.000     .9950252    1.140417
+-------------+----------------------------------------------------------------
+     sigma_u |  .35135125
+     sigma_e |  .35125535
+         rho |   .5001365   (fraction of variance due to u_i)
+------------------------------------------------------------------------------
+```
+
+```
 xttest0
 ```
-![di1](https://github.com/HenrySchall/Panel-Data/assets/96027335/03c94b56-7c55-4209-a21b-5cdc54e984a2)
+```
+Breusch and Pagan Lagrangian multiplier test for random effects
 
-- prob > chibar2 = 0 -> rejeita H0, então a variância de ui é diferente de zero, melhor especificação não é MQO Agrupado. **Então RE é preferida a MQO Agrupado**
+        lwage[nr,t] = Xb + u[nr] + e[nr,t]
 
-#### Teste de Chow ou Teste F (Teste de igualdade de interceptos e inclinações do POLS).
+        Estimated results:
+                         |       Var     SD = sqrt(Var)
+                ---------+-----------------------------
+                   lwage |   .2836728       .5326094
+                       e |   .1233803       .3512553
+                       u |   .1234477       .3513513
 
-> Ele estima uma equação auxiliar, em que se analisa o efeito de um variável explicativa, influenciando a variável dependente, de modo diferente para cada indivíduo, ou seja, é como se eu cria-se uma dummy para cada indivíduo e multiplicasse pela variável explicativa selecionada e ao realizar um teste de hipótese em conjunto (teste de Chow), se os parâmetros forem em conjunto estatisticamente significativos, não há igualdade entre os interceptos, então há efeitos específicos para cada indivíduo.
+        Test: Var(u) = 0
+                             chibar2(01) =  3807.33
+                          Prob > chibar2 =   0.0000
+```
 
-- Hipótese nula (H0): Há igualdade de interceptos e inclinações para todos os "is"
-- Hipótese alternativa (H1): Não há igualdade de interceptos e inclinações para todos os "is"
+- prob > chibar2 = 0 -> rejects H0, so the variance of ui is different from zero, the best specification is not Pooled OLS. **So RE is preferred to Pooled OLS**
 
-> A rejeição da hipótese nula indica que os parâmetros são diferentes entre indivíduos, desta forma FE é preferível à MQO Agrupado.
+#### Chow Test or F Test (POLS intercept and slope equality test).
 
-```R
+> It estimates an auxiliary equation, in which the effect of an explanatory variable is analyzed, influencing the dependent variable, differently for each individual, that is, it is as if I created a dummy for each individual and multiplied it by the selected explanatory variable and when performing a joint hypothesis test (Chow test), if the parameters are statistically significant together, there is no equality between the intercepts, so there are specific effects for each individual.
+
+- Null hypothesis (H0): There is equality of intercepts and slopes for all "i"
+- Alternative hypothesis (H1): There is no equality of intercepts and slopes for all "i"
+
+> Rejection of the null hypothesis indicates that the parameters are different between individuals, therefore FE is preferable to Pooled OLS.
+
+```
 xtreg lwage exper expersq union married, fe
 ```
-![di2](https://github.com/HenrySchall/Panel-Data/assets/96027335/dde40069-11c5-4b84-81f3-df02f0d8766a)
+```
+
+Fixed-effects (within) regression               Number of obs     =      4,360
+Group variable: nr                              Number of groups  =        545
+
+R-squared:                                      Obs per group:
+     Within  = 0.1780                                         min =          8
+     Between = 0.0005                                         avg =        8.0
+     Overall = 0.0638                                         max =          8
+
+                                                F(4, 3811)        =     206.38
+corr(u_i, Xb) = -0.1139                         Prob > F          =     0.0000
+
+------------------------------------------------------------------------------
+       lwage | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+       exper |   .1168467   .0084197    13.88   0.000     .1003392    .1333542
+     expersq |  -.0043009   .0006053    -7.11   0.000    -.0054876   -.0031142
+       union |   .0820871   .0192907     4.26   0.000      .044266    .1199083
+     married |   .0453033   .0183097     2.47   0.013     .0094056     .081201
+       _cons |    1.06488   .0266607    39.94   0.000     1.012609     1.11715
+-------------+----------------------------------------------------------------
+     sigma_u |   .4000539
+     sigma_e |  .35125535
+         rho |   .5646785   (fraction of variance due to u_i)
+------------------------------------------------------------------------------
+F test that all u_i=0: F(544, 3811) = 9.71                   Prob > F = 0.0000
+```
 
 - p-valor > F = 0 -> rejeito H0, então Não há igualdade de interceptos e inclinações para todos os "is". **Então FE é preferida a MQO Agrupado**
 - OBS: Note que há dois p-valor > F um em cima e outro em baixo, o primeiro é a significância global do modelo e o segundo o Teste de Chow.
