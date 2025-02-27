@@ -288,7 +288,7 @@ reg lwage educ exper expersq union female
 
 > However, what is the real effect on salaries between 1978 and 1985, taking into account the factors education and being a woman. Was there an increase or decrease in salary from 1978 in relation to 1985? In the previous example, we performed the difference between the dummies y82 and y84, to find this real effect, however an alternative would be to use the Difference-in-Differences Estimator (DID).
 
-### Difference-in-Differences (DID) Estimator
+### Difference-in-Differences Estimator (DID)
 > This is an alternative to the Pooled OLS Estimator. It is used when we want to capture the effect before and after an event, that is, of a specific change in the data. Its logic is similar to pharmaceutical tests, where a sample population is selected, in which part of this population receives a treatment (treatment group) of a certain natural process, while the other part of this population does not receive the treatment (control group). Given by the following equation:
 
 $Yit = \beta0 +\delta0D + \beta1DT + \delta1 D * DT + eit$
