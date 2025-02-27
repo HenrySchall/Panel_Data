@@ -685,7 +685,7 @@ reg ccrmrte cunem
        _cons |    15.4022   4.702117     3.28   0.002      5.92571     24.8787
 ------------------------------------------------------------------------------
 ```
-> Obsevation: if it is necessary to calculate the first difference of a variable use the command: 
+> Note: if it is necessary to calculate the first difference of a variable use the command: 
 
 ```
 generate ccrmrte2 = D.crmrte
@@ -859,6 +859,7 @@ F test that all u_i=0: F(53, 104) = 24.66                    Prob > F = 0.0000
 ```
 tabulate fcode, generate(dum)
 ```
+
 ```
   firm code |
      number |      Freq.     Percent        Cum.
@@ -1023,9 +1024,11 @@ tabulate fcode, generate(dum)
 ------------+-----------------------------------
       Total |        471      100.00
 ```
+
 ```
 xtreg lscrap d88 d89 grant grant_1 dum*
 ```
+
 ```
 Random-effects GLS regression                   Number of obs     =        162
 Group variable: fcode                           Number of groups  =         54
@@ -1210,69 +1213,181 @@ corr(u_i, X) = 0 (assumed)                      Prob > chi2       =     0.0000
 ------------------------------------------------------------------------------
 ```
 
-Observaçóes: 
-- Paineis desbalanceados são aqueles que apresentam algum tipo de atrito nos seus dados (falta de informação em algum período), nesse caso se as variáveis explicativas estiverem correlacionadas com o termo de erro endossicrático teremos o problema de seleção amostral (solução: Estimador de Heckman).
+Notes:
+- Unbalanced panels are those that present some type of friction in their data (lack of information in some period). In this case, if the explanatory variables are correlated with the endosymbolic error term, we will have a sample selection problem (solution: Heckman Estimator).
 
-### Estimador de Efeitos Aleatório (RE)
-> O Estimador de Efeitos Aleatório presume que as diferenças individuais são capturadas por um termo de erro específico de cada unidade, ou seja, há a presença do ai, ele é aleatório e não correlacionado com as variáveis explicativas, com isso o estimador MQO Agrupado não será viesado. Ele até pode não ser viesado (é consistente), mas ele não será eficiente, porque haverá autocorrelação serial no termo de erro composto, ou sejam o erro de um período será levado para o outro, já que o ai não é eliminado. A solução para esse problema é a realização de uma transformação de Mínimos Quadrados Generalizados (GLS), em outras palavras, uma transformação "quase na média", isso ocorre porque conhece-se a COR (Vit, Vit-1) e essa correlação está associada a variância do termo de erro endossincrático e à variância de ai. Sendo assim pode-se ponderar os Xs e o Y, pela estrutura de mudança da variância doas erros, dependendo de X, esse seria todo o processo de obtenção do estimador de Efeito Aleatório (RE). Matemáticamente falando:
+### Random Effects Estimator (RE)
+> The Random Effects Estimator assumes that individual differences are captured by a specific error term for each unit, that is, there is the presence of ai, it is random and not correlated with the explanatory variables. Therefore, the Grouped OLS estimator will not be biased. It may not be biased (it is consistent), but it will not be efficient, because there will be serial autocorrelation in the composite error term, that is, the error from one period will be carried over to the next, since ai is not eliminated. The solution to this problem is to perform a Generalized Least Squares (GLS) transformation, in other words, a "near-average" transformation, this occurs because the COR (Vit, Vit-1) is known and this correlation is associated with the variance of the endosyncratic error term and the variance of ai. Thus, one can weight the Xs and Y, by the structure of the change in the variance of the errors, depending on X, this would be the entire process of obtaining the Random Effect (RE) estimator. Mathematically speaking:
 
 ![Captura de tela 2024-07-05 154904](https://github.com/HenrySchall/Panel-Data/assets/96027335/2b24bc4e-cdf2-47d5-865f-4f96593df8c5)
 
-- λ -> É a ponderação da estrutura de correlação serial, devido aos efeitos fixos presentes em MQO. Essa é a transformação "quase nada média", poderada por λ (estima-se o λ), em vez da transforma dentro do grupo, para cada Y e cada X de it em relação à média de i.
+- λ -> It is the weighting of the serial correlation structure, due to the fixed effects present in OLS. This is the "almost no mean" transformation, powered by λ (λ is estimated), instead of the within-group transformation, for each Y and each X of it in relation to the mean of i.
 
-#### Casos: 
-- λ = 1 -> Quando $𝜎^2$ tem uma variância muito alta, sginifica que existe uma diferença muito grande entre os ai's (variância de ai será muito grande), então o efeito fixo é relevante. 
-- λ = 0 -> A variãncia de ai é muito pequeuna, então não há efieto fixo, que diferência as unidades de análise.
+#### Cases:
+- λ = 1 -> When $𝜎^2$ has a very high variance, it means that there is a very large difference between the ai's (the variance of ai will be very large), so the fixed effect is relevant.
+- λ = 0 -> The variance of ai is very small, so there is no fixed effect that differentiates the units of analysis.
 
-Sendo assim, podemos concluir que:
-- Quanto mais próximo de λ = 0, MQO é o estimador preferível
-- Quanto mais próximo de λ = 1, FE é o estimador preferível
-- Quanto mais próximo de λ = 0,5 (da média), RE é o estimador preferível
-
-  O estimador de GLS, no contexto de efeitos aleatoris é uma stiuação intermediária.
+Therefore, we can conclude that:
+- The closer to λ = 0, MQO is the preferable estimator
+- The closer to λ = 1, FE is the preferable estimator
+- The closer to λ = 0.5 (from the mean), RE is the preferable estimator
+  
+> Therefore, the GLS estimator, in the context of random effects, is an intermediate situation.
     
-#### Exemplo 
-Carregar Base -> WAGEPAN.DTA"
+#### 3rd Third Example
+Load Base -> WAGEPAN.DTA"
 
 Legenda de variáveis:
 - ui -> ai
 - eit -> uit
-- sigma_u -> desvio padrão do efeito fixo (ai)
-- sigma_e -> desvio padrão do componente endiossincráico (uit)
-- rho -> correlação intraclasse do erro v (composto) ou devido ao ai.
+
 - r2_o -> quadrado do coeficiente de correlação entre valores observados e ajustados (ignorando ai) para variabilidade nas duas dimensões.
 - r2_b -> quadrado do coeficiente de correlação entre valores observados e ajustados (ignorando ai) para variabilidade entre grupos.
 - r2_w -> quadrado do coeficiente de correlação entre valores observados e ajustados (ignorando ai) para variabilidade intra grupos.
 - theta -> lambda
+- vce(cluster nr) -> controle de heterocedasticidade
 
-```R
-# MQO
-reg lwage black hisp exper expersq union educ married d81 d82 d83 d84 d85 d86 d87, vce(cluster nr)
-# vce(cluster nr) -> controle de heterocedasticidade
 ```
-![imagg1](https://github.com/HenrySchall/Panel-Data/assets/96027335/c2694844-9211-4fae-8741-3e02db132ba7)
+reg lwage black hisp exper expersq union educ married d81 d82 d83 d84 d85 d86 d87, vce(cluster nr)
+```
 
-```r
+```
+Estimated GLS
+# vce(cluster nr) -> controle de heterocedasticidade
+Linear regression                               Number of obs     =      4,360
+                                                F(14, 544)        =      47.10
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.1893
+                                                Root MSE          =     .48033
+
+                                   (Std. err. adjusted for 545 clusters in nr)
+------------------------------------------------------------------------------
+             |               Robust
+       lwage | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+       black |  -.1392342   .0505238    -2.76   0.006    -.2384798   -.0399887
+        hisp |   .0160195   .0390781     0.41   0.682     -.060743     .092782
+       exper |   .0672345   .0195958     3.43   0.001     .0287417    .1057273
+     expersq |  -.0024117   .0010252    -2.35   0.019    -.0044255   -.0003979
+       union |   .1824613   .0274435     6.65   0.000     .1285531    .2363695
+        educ |   .0913498   .0110822     8.24   0.000     .0695807    .1131189
+     married |   .1082529    .026034     4.16   0.000     .0571135    .1593924
+         d81 |     .05832    .028228     2.07   0.039     .0028707    .1137693
+         d82 |   .0627744   .0369735     1.70   0.090    -.0098538    .1354027
+         d83 |   .0620117    .046248     1.34   0.181    -.0288348    .1528583
+         d84 |   .0904672    .057988     1.56   0.119    -.0234407     .204375
+         d85 |   .1092463   .0668474     1.63   0.103    -.0220644     .240557
+         d86 |   .1419596   .0762348     1.86   0.063     -.007791    .2917102
+         d87 |   .1738334   .0852056     2.04   0.042     .0064611    .3412057
+       _cons |   .0920558   .1609365     0.57   0.568    -.2240773    .4081888
+------------------------------------------------------------------------------
+```
+
+```
 iis nr
 ```
 
-```r
+```
 tis year
 ```
 
-```r
-# Efeito Fixo (FE)
+```
 xtreg lwage black hisp exper expersq union educ married d81 d82 d83 d84 d85 d86 d87,fe vce(cluster nr)
 ```
 
-![imagg2](https://github.com/HenrySchall/Panel-Data/assets/96027335/07ee40f2-59ae-4d23-9b44-850ab7ae844c)
+```
+# Fixed Effect (FE)
+note: black omitted because of collinearity.
+note: hisp omitted because of collinearity.
+note: educ omitted because of collinearity.
+note: d87 omitted because of collinearity.
 
-```R
-# Efeito Aleatório (RE)
+Fixed-effects (within) regression               Number of obs     =      4,360
+Group variable: nr                              Number of groups  =        545
+
+R-squared:                                      Obs per group:
+     Within  = 0.1806                                         min =          8
+     Between = 0.0005                                         avg =        8.0
+     Overall = 0.0635                                         max =          8
+
+                                                F(10, 544)        =      46.59
+corr(u_i, Xb) = -0.1212                         Prob > F          =     0.0000
+
+                                   (Std. err. adjusted for 545 clusters in nr)
+------------------------------------------------------------------------------
+             |               Robust
+       lwage | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+       black |          0  (omitted)
+        hisp |          0  (omitted)
+       exper |   .1321464    .012008    11.00   0.000     .1085586    .1557342
+     expersq |  -.0051855   .0008102    -6.40   0.000    -.0067771   -.0035939
+       union |   .0800019   .0227431     3.52   0.000     .0353268    .1246769
+        educ |          0  (omitted)
+     married |   .0466804   .0210038     2.22   0.027     .0054218    .0879389
+         d81 |   .0190448   .0227267     0.84   0.402     -.025598    .0636876
+         d82 |   -.011322   .0212167    -0.53   0.594    -.0529987    .0303547
+         d83 |  -.0419955   .0205087    -2.05   0.041    -.0822814   -.0017096
+         d84 |  -.0384709   .0211722    -1.82   0.070    -.0800601    .0031183
+         d85 |  -.0432498    .017595    -2.46   0.014    -.0778122   -.0086874
+         d86 |  -.0273819   .0162181    -1.69   0.092    -.0592396    .0044757
+         d87 |          0  (omitted)
+       _cons |    1.02764   .0398919    25.76   0.000     .9492785    1.106001
+-------------+----------------------------------------------------------------
+     sigma_u |   .4009279
+     sigma_e |  .35099001
+         rho |  .56612236   (fraction of variance due to u_i)
+------------------------------------------------------------------------------
+sigma_u -> desvio padrão do efeito fixo (ai)
+sigma_e -> desvio padrão do componente endiossincráico (uit)
+rho -> correlação intraclasse do erro v (composto)
+```
+
+```
 xtreg lwage black hisp exper expersq union educ married d81 d82 d83 d84 d85 d86 d87,re vce(cluster nr) theta
 ```
-![imagg3](https://github.com/HenrySchall/Panel-Data/assets/96027335/8afe11f1-09c0-4fa9-a49c-79a1982770de)
 
+```
+# Efeito Aleatório (RE)
+
+Random-effects GLS regression                   Number of obs     =      4,360
+Group variable: nr                              Number of groups  =        545
+
+R-squared:                                      Obs per group:
+     Within  = 0.1799                                         min =          8
+     Between = 0.1860                                         avg =        8.0
+     Overall = 0.1830                                         max =          8
+
+                                                Wald chi2(14)     =     610.97
+corr(u_i, X) = 0 (assumed)                      Prob > chi2       =     0.0000
+theta        = .64291089
+
+                                   (Std. err. adjusted for 545 clusters in nr)
+------------------------------------------------------------------------------
+             |               Robust
+       lwage | Coefficient  std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+       black |  -.1393767   .0509251    -2.74   0.006    -.2391882   -.0395653
+        hisp |   .0217317   .0399157     0.54   0.586    -.0565015     .099965
+       exper |   .1057545    .016379     6.46   0.000     .0736522    .1378568
+     expersq |  -.0047239   .0007917    -5.97   0.000    -.0062756   -.0031723
+       union |   .1061344    .020844     5.09   0.000      .065281    .1469879
+        educ |   .0918763   .0111455     8.24   0.000     .0700315    .1137211
+     married |    .063986   .0189722     3.37   0.001     .0268013    .1011708
+         d81 |    .040462   .0275684     1.47   0.142    -.0135711    .0944951
+         d82 |   .0309212   .0350705     0.88   0.378    -.0378158    .0996581
+         d83 |   .0202806    .043861     0.46   0.644    -.0656853    .1062466
+         d84 |   .0431187   .0555848     0.78   0.438    -.0658254    .1520628
+         d85 |   .0578155   .0645584     0.90   0.370    -.0687167    .1843476
+         d86 |   .0919476   .0747028     1.23   0.218    -.0544671    .2383623
+         d87 |   .1349289   .0848618     1.59   0.112    -.0313971    .3012549
+       _cons |   .0235864   .1599577     0.15   0.883     -.289925    .3370977
+-------------+----------------------------------------------------------------
+     sigma_u |  .32460315
+     sigma_e |  .35099001
+         rho |  .46100216   (fraction of variance due to u_i)
+------------------------------------------------------------------------------
+```
 
 ##### Gerar Tabela Comparativa 
 ```R
