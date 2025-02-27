@@ -1579,37 +1579,55 @@ corr(u_i, Xb) = -0.1139                         Prob > F          =     0.0000
 F test that all u_i=0: F(544, 3811) = 9.71                   Prob > F = 0.0000
 ```
 
-- p-valor > F = 0 -> rejeito H0, então Não há igualdade de interceptos e inclinações para todos os "is". **Então FE é preferida a MQO Agrupado**
-- OBS: Note que há dois p-valor > F um em cima e outro em baixo, o primeiro é a significância global do modelo e o segundo o Teste de Chow.
+- p-value > F = 0 -> I reject H0, so there is no equality of intercepts and slopes for all "i". **So FE is preferred to Pooled OLS**
+- NOTE: Note that there are two p-values ​​> F, one above and one below, the first is the global significance of the model and the second is the Chow Test.
 
-**Primeiro teste sugeriu RE o segundo FE, nos dois casos a solução de agrupadamento foi descartada. Então qual devo escolher FE ou RE?**
+**The first test suggested RE, the second FE, in both cases the clustering solution was discarded. So which one should I choose, FE or RE?**
 
-#### Teste de Hausman
+#### Hausman Test
 
-> Ele é usado para comparar modelos, para verificar se há diferença sistemática nos parâmentros estimados entre os modelos, com o o bjetivo deselecionar o modelo mais parcimonioso.
+> It is used to compare models, to check if there is a systematic difference in the estimated parameters between the models, with the aim of selecting the most parsimonious model.
 
-- Hipótese nula (H0): Diferença nos coeficientes não é sistemática -> EA é consistente (heterogeneidade aleatória)
-- Hipótese alternativa (H1): Diferença nos coeficientes é sistemática -> EA não é consistente (homogeneidade aleatória)
+- Null hypothesis (H0): Difference in coefficients is not systematic -> EA is consistent (random heterogeneity)
+- Alternative hypothesis (H1): Difference in coefficients is systematic -> EA is not consistent (random homogeneity)
 
-> A rejeição da hipótese nula indica que FE é melhor que RE
+> Rejection of the null hypothesis indicates that FE is better than RE
 
-```R
-# Etapa 1 -> Estimar com o Efeito Fixo
+- Step 1 -> Estimate with Fixed Effect
+```
 xtreg lwage exper expersq union married, fe 
 ```
-
-```R
+```
 estimates store FE
 ```
 
-```R
-# Etapa 2 -> Estimar com o Efeito Aleatório
+- Step 2 -> Estimate with the Random Effect
+```
 xtreg lwage exper expersq union married, re
 ```
-```R
-# Rodando Teste
+- Step 3 -> Run the test 
+```
 hausman FE
 ```
-![di3](https://github.com/HenrySchall/Panel-Data/assets/96027335/db9b16e3-a18a-427e-b540-94ef25d8773d)
+```
+                 ---- Coefficients ----
+             |      (b)          (B)            (b-B)     sqrt(diag(V_b-V_B))
+             |       FE           .          Difference       Std. err.
+-------------+----------------------------------------------------------------
+       exper |    .1168467     .1175546       -.0007079        .0013369
+     expersq |   -.0043009    -.0047935        .0004926        .0001197
+       union |    .0820871     .1000728       -.0179857        .0067273
+     married |    .0453033     .0749106       -.0296073        .0068551
+------------------------------------------------------------------------------
+                          b = Consistent under H0 and Ha; obtained from xtreg.
+           B = Inconsistent under Ha, efficient under H0; obtained from xtreg.
+
+Test of H0: Difference in coefficients not systematic
+
+    chi2(4) = (b-B)'[(V_b-V_B)^(-1)](b-B)
+            = 250.26
+Prob > chi2 = 0.0000
+```
+
 
 
