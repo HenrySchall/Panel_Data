@@ -1470,7 +1470,6 @@ estimates table OLS FE RE, b se t stats(N r2 r2_o r2_b r2_w sigma_u sigma_e rho 
 -----------------------------------------------------
                                        Legend: b/se/t
 ```
-
 Variable legend:
 - ui -> ai
 - eit -> uit
@@ -1522,7 +1521,6 @@ theta        = .66674755
          rho |   .5001365   (fraction of variance due to u_i)
 ------------------------------------------------------------------------------
 ```
-
 ```
 xttest0
 ```
