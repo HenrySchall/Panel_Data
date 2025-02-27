@@ -26,7 +26,6 @@ $Yit = \beta0 + + \beta1Xit + \beta2Xit + eit$
 ## Pooled Cross Section
 
 #### 1º First Example
-
 Load Base -> FERTIL1.DTA (number of children per woman between 1974 and 1984)
 
 ```
@@ -223,7 +222,6 @@ Note that:
 - Our model is significant, because we have Prob > F = 0.0000 . However, not all of our variables are significant at the 10% significance level. - Since the dummies y74, y76, y78, 80 are not significant, that is, controlled by the other factors, the fertility of these years is statistically equal to that of y72. - We can see that the dummies y82 and y84 are significant and negative, that is, controlled by the other factors, there is a long-term trend in the decline of fertility and this decline is approximately (0.522 - 0.545 = -0.023 children).
 
 #### 2º Second Example
-
 Load base -> CPS78_85.DTA (Value of salaries of 1978 and 1985)
 
 ```
@@ -539,7 +537,7 @@ reg rprice y81 nearinc y81nrinc age agesq intst land area rooms baths
 ------------------------------------------------------------------------------
 ```
 
-#### 4º Quarto Exemplo
+#### 4º Fourth Example
 Load base e -> INJURY.DTA (In July 1980 there was a limit for receiving compensation assistance for work accidents in relation to the income of individuals, and individuals with income above the limit did not receive compensation. After July 1982, this limit was raised)
 
 ```
@@ -621,44 +619,84 @@ $(Yi2 - Yi1) = \delta0 + \beta1(Xi2 - Xi1) + (ui2 - ui1)$
 
 $∆Yi = \delta0 + \beta1∆Xi + ∆ui$
 
-#### 1º Primeiro Exemplo 
-Carregar Base -> CRIME2.DTA (Crime rates for US counties in 82 and 87).
+#### 1st First Example
+Load Base -> CRIME2.DTA (Crime rates for US counties in 82 and 87).
 
-```r
+```
 tab year
 ```
-![Captura de tela 2024-07-03 233018](https://github.com/HenrySchall/Panel-Data/assets/96027335/c7b2aaac-fa78-45b5-a800-019fec40e083)
+```
 
-- crmrte = taxa de crime
-- unem = desemprego
-- observa-se que temos os mesmos números de observações para os anos 82 e 87, então temos um painel verdadeiro
+   82 or 87 |      Freq.     Percent        Cum.
+------------+-----------------------------------
+         82 |         46       50.00       50.00
+         87 |         46       50.00      100.00
+------------+-----------------------------------
+      Total |         92      100.00
+```
+- crmrte = crime rate
+- unem = unemployment
+- we can see that we have the same number of observations for the years 82 and 87, so we have a true panel
 
-Equação do Modelo: $ccrmrte = \beta0 +\delta0D87 + \beta1cunem + eit$
+Model Equation: $ccrmrte = \beta0 +\delta0D87 + \beta1cunem + eit$
 
-```R
+```
 reg crmrte d87 unem
 ```
-![2](https://github.com/HenrySchall/Panel-Data/assets/96027335/dac9953a-e4c2-4d80-9e92-4e2a41d81c7a)
+```
+      Source |       SS           df       MS      Number of obs   =        92
+-------------+----------------------------------   F(2, 89)        =      0.55
+       Model |  989.717223         2  494.858612   Prob > F        =    0.5788
+    Residual |  80055.7995        89  899.503365   R-squared       =    0.0122
+-------------+----------------------------------   Adj R-squared   =   -0.0100
+       Total |  81045.5167        91  890.610074   Root MSE        =    29.992
 
-unem foi dada como não significativa (resultado contrário ao da literatura), então: 
-- há variáveis omitidas no erro
-- elas são correlacionadas com unem
-
-Então não posso estimar por MQO (viesado), vou usar estimador de primeiras diferenças.
-
-```R
-# ccrmrte e cunem são as primeiras diferenças das variáveis
-reg ccrmrte cunem
+------------------------------------------------------------------------------
+      crmrte | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         d87 |   7.940416   7.975325     1.00   0.322    -7.906385    23.78722
+        unem |   .4265473   1.188279     0.36   0.720    -1.934538    2.787633
+       _cons |   93.42025   12.73947     7.33   0.000     68.10719    118.7333
+------------------------------------------------------------------------------
 ```
 
-![3](https://github.com/HenrySchall/Panel-Data/assets/96027335/418e4c95-d013-46b5-8c32-6a21295c567c)
+unem was given as not significant (result contrary to that of the literature), then:
+- There are variables omitted in the error
+- They are correlated with unem
+- So I can't estimate by OLS (biased), I'll use first difference estimator.
 
-- Vemos claramente que nosso modelo passou a ser significativo, assim como a variável unem.
-- Interpretação _cons (intercepto) -> Condicionado pelas outras variavies explicativas iguais a 0, a variação da variável dependente é igual a 15.4 pontos perceutais, ou seja, mesmo com o desemprego não variando, ocorre um aumento nas ocorrências de crimininalidade de 82 para 87 em 15.4 ocorrências para cada grupo de 1000 habitantes.
-- Interpretação unem -> Quando o desemprego varia em um ponto percentual, a ocorrência de criminalidade aumenta (varia positivamente) em 2.2 ocorrências para cada grupo de 1000 habitantes.
+```
+reg ccrmrte cunem
+```
+```
+# ccrmrte e cunem são as primeiras diferenças das variáveis
 
-#### 2º Segundo Exemplo 
-Carregar Base -> Jtrain.DTA (Acompanhamento de 54 empresas durante três anos, mostrando a taxa de descarte dos seus produtos, num cenário onde há subsídio governamental para treinamento de funcionários). 
+      Source |       SS           df       MS      Number of obs   =        46
+-------------+----------------------------------   F(1, 44)        =      6.38
+       Model |  2566.43744         1  2566.43744   Prob > F        =    0.0152
+    Residual |  17689.5497        44  402.035219   R-squared       =    0.1267
+-------------+----------------------------------   Adj R-squared   =    0.1069
+       Total |  20255.9871        45  450.133047   Root MSE        =    20.051
+
+------------------------------------------------------------------------------
+     ccrmrte | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+       cunem |   2.217999   .8778658     2.53   0.015     .4487771    3.987222
+       _cons |    15.4022   4.702117     3.28   0.002      5.92571     24.8787
+------------------------------------------------------------------------------
+```
+> Obsevation: if it is necessary to calculate the first difference of a variable use the command: 
+
+```
+generate ccrmrte2 = D.crmrte
+```
+
+- We can clearly see that our model has become significant, as well as the unem variable.
+- Interpretation _cons (intercept) -> Conditioned by the other explanatory variables equal to 0, the variation of the dependent variable is equal to 15.4 percentage points, that is, even with unemployment not varying, there is an increase in crime occurrences from 82 to 87 in 15.4 occurrences for each group of 1000 inhabitants.
+- Interpretation unem -> When unemployment varies by one percentage point, the occurrence of crime increases (varies positively) by 2.2 occurrences for each group of 1000 inhabitants.
+
+#### 2nd Second Example
+Load Base -> Jtrain.DTA (Monitoring of 54 companies for three years, showing the disposal rate of their products, in a scenario where there is a government subsidy for employee training).
 
 Descrição das variáveis: 
 - lscrap = taxa de descarte
@@ -666,38 +704,98 @@ Descrição das variáveis:
 - grant_1 = subsídio para treinamento dummy para 88
 - fcode = é o código da empresa
 
-```r
-# MQO Agrupado
+```
 reg lscrap d88 d89 grant grant_1
 ```
-![1](https://github.com/HenrySchall/Panel-Data/assets/96027335/38738c66-939f-4c2c-8270-12f809667b92)
+```
+# Grouped OLS
+      Source |       SS           df       MS      Number of obs   =       162
+-------------+----------------------------------   F(4, 157)       =      0.69
+       Model |  6.15830732         4  1.53957683   Prob > F        =    0.5989
+    Residual |  349.586781       157   2.2266674   R-squared       =    0.0173
+-------------+----------------------------------   Adj R-squared   =   -0.0077
+       Total |  355.745089       161  2.20959682   Root MSE        =    1.4922
 
-> Ao rodar modelo via MQO Agrupado, as dummies grant e grant_1 são não significativas. Conclui-se que existe alguma coisa omitida no termo de erro que leva a uma estimação viesada via MQO Agrupado. Por exemplo, poderiamos dizer que existe diferenças entre as empresas, na forma como os descartes são feitos, isso leva a considerar a presença de um efeito fixo (FE) e obviamente a utilização do Estimador de Primeiras Diferenças.
+------------------------------------------------------------------------------
+      lscrap | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         d88 |  -.2393704   .3108639    -0.77   0.442    -.8533854    .3746446
+         d89 |  -.4965236   .3379281    -1.47   0.144    -1.163996    .1709483
+       grant |   .2000197   .3382846     0.59   0.555    -.4681564    .8681958
+     grant_1 |   .0489357   .4360663     0.11   0.911    -.8123778    .9102492
+       _cons |   .5974341    .203063     2.94   0.004     .1963462    .9985219
+------------------------------------------------------------------------------
+```
+> When running the model via Grouped OLS, the dummies grant and grant_1 are not significant. It can be concluded that there is something omitted in the error term that leads to a biased estimation via Grouped OLS. For example, we could say that there are differences between companies in the way discards are made, which leads to considering the presence of a fixed effect (FE) and obviously the use of the First Difference Estimator.
 
-```r
+```
 reg clscrap cgrant
 ```
-![imag](https://github.com/HenrySchall/Panel-Data/assets/96027335/2cc76fac-b68d-4fd8-b7f0-e727f264a28f)
+```
+      Source |       SS           df       MS      Number of obs   =       108
+-------------+----------------------------------   F(1, 106)       =      0.21
+       Model |  .072601835         1  .072601835   Prob > F        =    0.6440
+    Residual |   35.828927       106  .338008745   R-squared       =    0.0020
+-------------+----------------------------------   Adj R-squared   =   -0.0074
+       Total |  35.9015288       107  .335528307   Root MSE        =    .58139
 
-> Nesse caso como temos a variável fcode para indicar o número de cada firma, podemos rodar o estimador diretamente, sem precisar calcular as primeiras diferenças de cada variável, como feito no exemplo anterior
+------------------------------------------------------------------------------
+     clscrap | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+      cgrant |   -.039272    .084737    -0.46   0.644    -.2072713    .1287274
+       _cons |  -.2174961   .0564913    -3.85   0.000    -.3294957   -.1054966
+------------------------------------------------------------------------------
+```
 
-```r
-# informando para o stata a presença de um painel
+> In this case, since we have the fcode variable to indicate the number of each firm, we can run the estimator directly, without needing to calculate the first differences of each variable, as done in the previous example.
+
+```
 xtset fcode year
+```
+```
+# Informing stata of the presence of a panel
+Panel variable: fcode (strongly balanced)
+ Time variable: year, 1987 to 1989
+         Delta: 1 unit
 ```
 - fcode (variável i)
 - year (variável t)
 
-```r
-# Primeiras Diferenças
+```
+# First Differences
 xtreg D.(lscrap grant)
 ```
-![imag2](https://github.com/HenrySchall/Panel-Data/assets/96027335/b190a1f5-8764-453b-950c-3bd3feddc394)
+```
 
-> Observa-se que o estimador de Primeiras Diferenças não retornou resultados estatísticamente significativos para as variáveis explicativas. Mas isso não significa que não temos a presença de Efeito Fixo, apenas que ele poder não ser o estimador adqueado, por isso outra alternativa para esse caso é o Estimador de Efeito Fixo (FE).
+Random-effects GLS regression                   Number of obs     =        108
+Group variable: fcode                           Number of groups  =         54
 
-### Estimador de Efeito Fixo
-> Como vimos Efeito fixo é algo que explica Yit, sendo específico de i, todavia não varia no horizonte de tempo observado, ou seja, ele controla todos os fatores que são constantes ao longo do tempo, mas que variam entre as unidades. Sendo assim, se de fato temos um efeito fixo é esperado que o valor médio da constante i seja exatamente igual a constante, ou seja, a média de ai no tempo é igual ao próprio ai. Essa suposição, permite realizar uma transformação intra-grupo (within), onde em vez de se tomar a diferença entre dois períodos, tira-se a diferença do período em realação a sua média. Matematicamente falando:
+R-squared:                                      Obs per group:
+     Within  = 0.0041                                         min =          2
+     Between = 0.0011                                         avg =        2.0
+     Overall = 0.0020                                         max =          2
+
+                                                Wald chi2(1)      =       0.26
+corr(u_i, X) = 0 (assumed)                      Prob > chi2       =     0.6100
+
+------------------------------------------------------------------------------
+    D.lscrap | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+       grant |
+         D1. |  -.0378244   .0741476    -0.51   0.610    -.1831511    .1075022
+             |
+       _cons |  -.2176301    .063343    -3.44   0.001    -.3417801   -.0934802
+-------------+----------------------------------------------------------------
+     sigma_u |  .30038384
+     sigma_e |  .50179022
+         rho |  .26381331   (fraction of variance due to u_i)
+------------------------------------------------------------------------------
+```
+
+> It can be seen that the First Differences estimator did not return statistically significant results for the explanatory variables. However, this does not mean that there is no Fixed Effect, only that it may not be the appropriate estimator, so another alternative for this case is the Fixed Effect Estimator (FE).
+
+### Fixed Effect Estimator
+> As we have seen, a fixed effect is something that explains Yit, being specific to i, but does not vary over the observed time horizon, that is, it controls all factors that are constant over time, but that vary between units. Therefore, if we do in fact have a fixed effect, it is expected that the average value of the constant i is exactly equal to the constant, that is, the average of ai over time is equal to ai itself. This assumption allows us to perform an intra-group transformation (within), where instead of taking the difference between two periods, we take the difference of the period in relation to its average. Mathematically speaking:
 
 $Yit = (\beta0 + \delta0) + \beta1Xit + Vit$ (ai + uit)$
 
@@ -705,49 +803,415 @@ $Yit = (\beta0 + \delta0) + \beta1Xit + Vit$ (ai + \bar{uit})$
 
 $(Yit - \bar{Yi}) = \delta0 + \beta1(Xit - \bar{Xi}) + (uit - \bar{uit})$
 
-$\ddot{Yit} = \delta0 + \beta1\ddot{Xit} + \ddot{uit}$ -> Aplico MQO Agrupado (Não será mais viesado)
+$\ddot{Yit} = \delta0 + \beta1\ddot{Xit} + \ddot{uit}$ -> I apply Grouped OLS (It will no longer be biased)
 
-> Após essa transformação intra-grupo, teria-se um equação onde o estimador MQO Agrupado não seria mais viesado, permitindo a estimação do modelo. Mas qual a diferença entre os modelos?
+> After this intra-group transformation, there would be an equation where the Grouped OLS estimator would no longer be biased, allowing the model to be estimated. But what is the difference between the models?
 
-#### Comparação PD x FE
-- Ambos os métodos controlam para variáveis que são constantes ao longo do tempo, mas o estimador de efeitos fixos faz isso explicitamente, enquanto o método de primeiras diferenças faz isso implicitamente.
-- O método de primeiras diferenças perde um período de dados devido à diferenciação, enquanto o estimador de efeitos fixos não.
-- No método de efeitos fixos, variáveis que não variam ao longo do tempo não podem ser incluídas no modelo, enquanto no método de primeiras diferenças essas variáveis são eliminadas automaticamente, o que diminui os graus de liberdade, aumentando a multicolinealidade.
-- Estudos mostram que em atpe t-2 período os resultados dos estimadores são idênticos, mas FE tem vantagem em relação a primeiras diferencas em paineis não balanceados.
-
-```r
+#### PD vs. FE Comparison
+- Both methods control for variables that are constant over time, but the fixed effects estimator does so explicitly, while the first-difference method does so implicitly.
+- The first-difference method loses a period of data due to differencing, while the fixed effects estimator does not.
+- In the fixed effects method, variables that do not vary over time cannot be included in the model, while in the first-difference method these variables are automatically eliminated, which reduces the degrees of freedom, increasing multicollinearity.
+- Studies show that in up to t-2 periods the results of the estimators are identical, but FE has an advantage over first-differences in unbalanced panels.
+  
+```
 xtset fcode year
 ```
-
-```R
+```
 xtreg lscrap d88 d89 grant grant_1, fe
 ```
-![3](https://github.com/HenrySchall/Panel-Data/assets/96027335/7bc851ba-ec29-471e-a8e3-0fa3050ab947)
+```
+Fixed-effects (within) regression               Number of obs     =        162
+Group variable: fcode                           Number of groups  =         54
 
-- Nosso modelo é significativo do ponto de vista global (Prob > F = 0.0001)
-- Controlado por outos fatores as taxas de descarte de 88 não são diferentes de em 89 estatiscamente falando
-- As taxas de descarte de 88, controlado por outros fatores, são menores do que em 89
-- Subsídios, controlado por outros fatores, reduz a taxa de descarte
-- Controladas por outros fatores, os subsidios diminuem as taxas de descarte
+R-squared:                                      Obs per group:
+     Within  = 0.2010                                         min =          3
+     Between = 0.0079                                         avg =        3.0
+     Overall = 0.0068                                         max =          3
 
-### LSDV (Least Squares Dummy Variable)
-> O Estimador de Efeito Fixo pode ser descrito de outra forma, chamada de LSDV (Least Squares Dummy Variable), esse método consiste em incluir uma dummy ou intercepto para cada i, com isso mostra-se explicitasmente o efeito dixo de cada i. Essa metodológia possui a vantagem de possbilitar a análise do efeito fixo individual, todavia o excesso de dummies reduz os graus de liberade (diminuindo o número de observações), que podem levar a estimativas menos precisas já dividinde-se a variabilidade entre mais parâmetros. Sendo assim recomenda-se o uso desse modelo apenas quando procura-se saber o efeito fixo individual de cada i;
+                                                F(4, 104)         =       6.54
+corr(u_i, Xb) = -0.0714                         Prob > F          =     0.0001
 
-```R
-tabulate fcode, generate(dum)
+------------------------------------------------------------------------------
+      lscrap | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         d88 |  -.0802157   .1094751    -0.73   0.465     -.297309    .1368776
+         d89 |  -.2472028   .1332183    -1.86   0.066    -.5113797    .0169741
+       grant |  -.2523149    .150629    -1.68   0.097    -.5510178    .0463881
+     grant_1 |  -.4215895      .2102    -2.01   0.047    -.8384239   -.0047551
+       _cons |   .5974341   .0677344     8.82   0.000     .4631142    .7317539
+-------------+----------------------------------------------------------------
+     sigma_u |   1.438982
+     sigma_e |  .49774421
+         rho |  .89313867   (fraction of variance due to u_i)
+------------------------------------------------------------------------------
+F test that all u_i=0: F(53, 104) = 24.66                    Prob > F = 0.0000
 ```
 
-```R
+- Our model is significant from a global point of view (Prob > F = 0.0001)
+- Controlled by other factors, the disposal rates of 88 are not statistically different from those in 89
+- The disposal rates of 88, controlled by other factors, are lower than in 89
+- Subsidies, controlled by other factors, reduce the disposal rate
+- Controlled by other factors, subsidies reduce the disposal rates
+
+### LSDV (Least Squares Dummy Variable)
+> The Fixed Effect Estimator can be described in another way, called LSDV (Least Squares Dummy Variable), this method consists of including a dummy or intercept for each i, thus explicitly showing the said effect of each i. This methodology has the advantage of enabling the analysis of individual fixed effects; however, the excess of dummies reduces the degrees of freedom (reducing the number of observations), which can lead to less precise estimates since the variability is divided among more parameters. Therefore, it is recommended to use this model only when seeking to know the individual fixed effect of each i.
+
+```
+tabulate fcode, generate(dum)
+```
+```
+  firm code |
+     number |      Freq.     Percent        Cum.
+------------+-----------------------------------
+     410032 |          3        0.64        0.64
+     410440 |          3        0.64        1.27
+     410495 |          3        0.64        1.91
+     410500 |          3        0.64        2.55
+     410501 |          3        0.64        3.18
+     410509 |          3        0.64        3.82
+     410513 |          3        0.64        4.46
+     410517 |          3        0.64        5.10
+     410518 |          3        0.64        5.73
+     410521 |          3        0.64        6.37
+     410523 |          3        0.64        7.01
+     410529 |          3        0.64        7.64
+     410531 |          3        0.64        8.28
+     410533 |          3        0.64        8.92
+     410535 |          3        0.64        9.55
+     410536 |          3        0.64       10.19
+     410538 |          3        0.64       10.83
+     410540 |          3        0.64       11.46
+     410544 |          3        0.64       12.10
+     410546 |          3        0.64       12.74
+     410547 |          3        0.64       13.38
+     410556 |          3        0.64       14.01
+     410560 |          3        0.64       14.65
+     410561 |          3        0.64       15.29
+     410562 |          3        0.64       15.92
+     410563 |          3        0.64       16.56
+     410564 |          3        0.64       17.20
+     410565 |          3        0.64       17.83
+     410566 |          3        0.64       18.47
+     410567 |          3        0.64       19.11
+     410569 |          3        0.64       19.75
+     410571 |          3        0.64       20.38
+     410577 |          3        0.64       21.02
+     410586 |          3        0.64       21.66
+     410591 |          3        0.64       22.29
+     410592 |          3        0.64       22.93
+     410593 |          3        0.64       23.57
+     410596 |          3        0.64       24.20
+     410603 |          3        0.64       24.84
+     410604 |          3        0.64       25.48
+     410606 |          3        0.64       26.11
+     410609 |          3        0.64       26.75
+     410612 |          3        0.64       27.39
+     410626 |          3        0.64       28.03
+     410627 |          3        0.64       28.66
+     410629 |          3        0.64       29.30
+     410635 |          3        0.64       29.94
+     410636 |          3        0.64       30.57
+     410639 |          3        0.64       31.21
+     410640 |          3        0.64       31.85
+     410641 |          3        0.64       32.48
+     410642 |          3        0.64       33.12
+     410649 |          3        0.64       33.76
+     410653 |          3        0.64       34.39
+     410665 |          3        0.64       35.03
+     410679 |          3        0.64       35.67
+     410680 |          3        0.64       36.31
+     410685 |          3        0.64       36.94
+     410686 |          3        0.64       37.58
+     418006 |          3        0.64       38.22
+     418007 |          3        0.64       38.85
+     418008 |          3        0.64       39.49
+     418011 |          3        0.64       40.13
+     418013 |          3        0.64       40.76
+     418014 |          3        0.64       41.40
+     418021 |          3        0.64       42.04
+     418024 |          3        0.64       42.68
+     418035 |          3        0.64       43.31
+     418036 |          3        0.64       43.95
+     418045 |          3        0.64       44.59
+     418046 |          3        0.64       45.22
+     418051 |          3        0.64       45.86
+     418052 |          3        0.64       46.50
+     418054 |          3        0.64       47.13
+     418065 |          3        0.64       47.77
+     418066 |          3        0.64       48.41
+     418076 |          3        0.64       49.04
+     418083 |          3        0.64       49.68
+     418084 |          3        0.64       50.32
+     418091 |          3        0.64       50.96
+     418097 |          3        0.64       51.59
+     418098 |          3        0.64       52.23
+     418107 |          3        0.64       52.87
+     418109 |          3        0.64       53.50
+     418118 |          3        0.64       54.14
+     418124 |          3        0.64       54.78
+     418125 |          3        0.64       55.41
+     418126 |          3        0.64       56.05
+     418140 |          3        0.64       56.69
+     418147 |          3        0.64       57.32
+     418163 |          3        0.64       57.96
+     418168 |          3        0.64       58.60
+     418177 |          3        0.64       59.24
+     418183 |          3        0.64       59.87
+     418185 |          3        0.64       60.51
+     418213 |          3        0.64       61.15
+     418220 |          3        0.64       61.78
+     418225 |          3        0.64       62.42
+     418229 |          3        0.64       63.06
+     418237 |          3        0.64       63.69
+     418239 |          3        0.64       64.33
+     418243 |          3        0.64       64.97
+     418245 |          3        0.64       65.61
+     419198 |          3        0.64       66.24
+     419201 |          3        0.64       66.88
+     419242 |          3        0.64       67.52
+     419268 |          3        0.64       68.15
+     419272 |          3        0.64       68.79
+     419275 |          3        0.64       69.43
+     419276 |          3        0.64       70.06
+     419289 |          3        0.64       70.70
+     419297 |          3        0.64       71.34
+     419298 |          3        0.64       71.97
+     419302 |          3        0.64       72.61
+     419303 |          3        0.64       73.25
+     419305 |          3        0.64       73.89
+     419307 |          3        0.64       74.52
+     419309 |          3        0.64       75.16
+     419312 |          3        0.64       75.80
+     419319 |          3        0.64       76.43
+     419328 |          3        0.64       77.07
+     419335 |          3        0.64       77.71
+     419339 |          3        0.64       78.34
+     419343 |          3        0.64       78.98
+     419344 |          3        0.64       79.62
+     419347 |          3        0.64       80.25
+     419351 |          3        0.64       80.89
+     419357 |          3        0.64       81.53
+     419375 |          3        0.64       82.17
+     419376 |          3        0.64       82.80
+     419378 |          3        0.64       83.44
+     419379 |          3        0.64       84.08
+     419380 |          3        0.64       84.71
+     419381 |          3        0.64       85.35
+     419384 |          3        0.64       85.99
+     419388 |          3        0.64       86.62
+     419392 |          3        0.64       87.26
+     419400 |          3        0.64       87.90
+     419401 |          3        0.64       88.54
+     419406 |          3        0.64       89.17
+     419409 |          3        0.64       89.81
+     419410 |          3        0.64       90.45
+     419420 |          3        0.64       91.08
+     419432 |          3        0.64       91.72
+     419433 |          3        0.64       92.36
+     419434 |          3        0.64       92.99
+     419449 |          3        0.64       93.63
+     419450 |          3        0.64       94.27
+     419459 |          3        0.64       94.90
+     419461 |          3        0.64       95.54
+     419467 |          3        0.64       96.18
+     419472 |          3        0.64       96.82
+     419473 |          3        0.64       97.45
+     419479 |          3        0.64       98.09
+     419482 |          3        0.64       98.73
+     419483 |          3        0.64       99.36
+     419486 |          3        0.64      100.00
+------------+-----------------------------------
+      Total |        471      100.00
+```
+```
 xtreg lscrap d88 d89 grant grant_1 dum*
+```
+```
+Random-effects GLS regression                   Number of obs     =        162
+Group variable: fcode                           Number of groups  =         54
+
+R-squared:                                      Obs per group:
+     Within  = 0.2010                                         min =          3
+     Between = 1.0000                                         avg =        3.0
+     Overall = 0.9276                                         max =          3
+
+                                                Wald chi2(57)     =    1331.91
+corr(u_i, X) = 0 (assumed)                      Prob > chi2       =     0.0000
+
+------------------------------------------------------------------------------
+      lscrap | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         d88 |  -.0802157   .1094751    -0.73   0.464     -.294783    .1343516
+         d89 |  -.2472028   .1332183    -1.86   0.064    -.5083058    .0139003
+       grant |  -.2523149    .150629    -1.68   0.094    -.5475423    .0429125
+     grant_1 |  -.4215895      .2102    -2.01   0.045    -.8335739   -.0096051
+        dum1 |          0  (omitted)
+        dum2 |          0  (omitted)
+        dum3 |          0  (omitted)
+        dum4 |          0  (omitted)
+        dum5 |          0  (omitted)
+        dum6 |          0  (omitted)
+        dum7 |          0  (omitted)
+        dum8 |          0  (omitted)
+        dum9 |          0  (omitted)
+       dum10 |          0  (omitted)
+       dum11 |  -6.140227   .4064064   -15.11   0.000    -6.936769   -5.343685
+       dum12 |          0  (omitted)
+       dum13 |          0  (omitted)
+       dum14 |          0  (omitted)
+       dum15 |          0  (omitted)
+       dum16 |          0  (omitted)
+       dum17 |  -2.234968   .4064064    -5.50   0.000     -3.03151   -1.438426
+       dum18 |          0  (omitted)
+       dum19 |          0  (omitted)
+       dum20 |          0  (omitted)
+       dum21 |          0  (omitted)
+       dum22 |          0  (omitted)
+       dum23 |          0  (omitted)
+       dum24 |          0  (omitted)
+       dum25 |          0  (omitted)
+       dum26 |  -1.422899   .4064064    -3.50   0.000    -2.219441   -.6263574
+       dum27 |          0  (omitted)
+       dum28 |  -1.696559   .4064064    -4.17   0.000    -2.493101   -.9000175
+       dum29 |  -1.518793   .4064064    -3.74   0.000    -2.315335   -.7222514
+       dum30 |  -3.860639   .4064064    -9.50   0.000    -4.657181   -3.064097
+       dum31 |          0  (omitted)
+       dum32 |          0  (omitted)
+       dum33 |   -2.71708   .4064064    -6.69   0.000    -3.513622   -1.920538
+       dum34 |          0  (omitted)
+       dum35 |          0  (omitted)
+       dum36 |  -.0136073   .4064064    -0.03   0.973    -.8101493    .7829347
+       dum37 |  -3.205269   .4064064    -7.89   0.000    -4.001811   -2.408727
+       dum38 |  -1.378389   .4064064    -3.39   0.001    -2.174931   -.5818469
+       dum39 |          0  (omitted)
+       dum40 |          0  (omitted)
+       dum41 |  -4.017246   .4064064    -9.88   0.000    -4.813788   -3.220704
+       dum42 |          0  (omitted)
+       dum43 |          0  (omitted)
+       dum44 |  -3.432003   .4064064    -8.44   0.000    -4.228545   -2.635461
+       dum45 |          0  (omitted)
+       dum46 |  -3.593904   .4064064    -8.84   0.000    -4.390446   -2.797362
+       dum47 |          0  (omitted)
+       dum48 |          0  (omitted)
+       dum49 |          0  (omitted)
+       dum50 |          0  (omitted)
+       dum51 |          0  (omitted)
+       dum52 |          0  (omitted)
+       dum53 |          0  (omitted)
+       dum54 |  -3.132317   .4064064    -7.71   0.000    -3.928859   -2.335775
+       dum55 |  -6.214608   .4064064   -15.29   0.000     -7.01115   -5.418066
+       dum56 |          0  (omitted)
+       dum57 |          0  (omitted)
+       dum58 |  -4.961392   .4064064   -12.21   0.000    -5.757934    -4.16485
+       dum59 |          0  (omitted)
+       dum60 |          0  (omitted)
+       dum61 |          0  (omitted)
+       dum62 |          0  (omitted)
+       dum63 |  -1.615852   .4201882    -3.85   0.000    -2.439406   -.7922984
+       dum64 |          0  (omitted)
+       dum65 |          0  (omitted)
+       dum66 |  -2.980634   .4201882    -7.09   0.000    -3.804188    -2.15708
+       dum67 |          0  (omitted)
+       dum68 |  -1.480697   .4201882    -3.52   0.000    -2.304251   -.6571434
+       dum69 |          0  (omitted)
+       dum70 |  -2.512121   .4064064    -6.18   0.000    -3.308663   -1.715579
+       dum71 |          0  (omitted)
+       dum72 |  -3.708901   .4201882    -8.83   0.000    -4.532455   -2.885347
+       dum73 |          0  (omitted)
+       dum74 |  -2.775932   .4201882    -6.61   0.000    -3.599486   -1.952379
+       dum75 |  -2.758024   .4201882    -6.56   0.000    -3.581578    -1.93447
+       dum76 |          0  (omitted)
+       dum77 |  -3.540301   .4201882    -8.43   0.000    -4.363855   -2.716747
+       dum78 |  -2.383381   .4201882    -5.67   0.000    -3.206934   -1.559827
+       dum79 |          0  (omitted)
+       dum80 |  -2.606835   .4201882    -6.20   0.000    -3.430389   -1.783281
+       dum81 |  -2.640472   .4201882    -6.28   0.000    -3.464026   -1.816919
+       dum82 |          0  (omitted)
+       dum83 |  -3.477985   .4201882    -8.28   0.000    -4.301539   -2.654432
+       dum84 |          0  (omitted)
+       dum85 |  -3.979211   .4201882    -9.47   0.000    -4.802765   -3.155657
+       dum86 |          0  (omitted)
+       dum87 |  -3.581844   .4201882    -8.52   0.000    -4.405397    -2.75829
+       dum88 |          0  (omitted)
+       dum89 |  -1.519958   .4201882    -3.62   0.000    -2.343512   -.6964044
+       dum90 |          0  (omitted)
+       dum91 |  -.9756548   .4201882    -2.32   0.020    -1.799209    -.152101
+       dum92 |  -6.012563   .4064064   -14.79   0.000    -6.809105   -5.216021
+       dum93 |  -.0722396   .4201882    -0.17   0.863    -.8957933    .7513142
+       dum94 |          0  (omitted)
+       dum95 |          0  (omitted)
+       dum96 |          0  (omitted)
+       dum97 |          0  (omitted)
+       dum98 |          0  (omitted)
+       dum99 |          0  (omitted)
+      dum100 |  -4.495012   .4201882   -10.70   0.000    -5.318566   -3.671458
+      dum101 |          0  (omitted)
+      dum102 |          0  (omitted)
+      dum103 |          0  (omitted)
+      dum104 |   -1.33342   .4201882    -3.17   0.002    -2.156973   -.5098658
+      dum105 |  -2.512121   .4064064    -6.18   0.000    -3.308663   -1.715579
+      dum106 |  -1.493268   .4201882    -3.55   0.000    -2.316822   -.6697143
+      dum107 |  -2.997043   .4094963    -7.32   0.000    -3.799641   -2.194445
+      dum108 |  -.1105996   .4094963    -0.27   0.787    -.9131976    .6919984
+      dum109 |          0  (omitted)
+      dum110 |          0  (omitted)
+      dum111 |  -2.888576   .4094963    -7.05   0.000    -3.691174   -2.085978
+      dum112 |  -4.568587   .4064064   -11.24   0.000    -5.365129   -3.772045
+      dum113 |          0  (omitted)
+      dum114 |          0  (omitted)
+      dum115 |          0  (omitted)
+      dum116 |          0  (omitted)
+      dum117 |  -3.214181   .4094963    -7.85   0.000    -4.016779   -2.411583
+      dum118 |          0  (omitted)
+      dum119 |          0  (omitted)
+      dum120 |          0  (omitted)
+      dum121 |          0  (omitted)
+      dum122 |          0  (omitted)
+      dum123 |  -3.878364   .4064064    -9.54   0.000    -4.674906   -3.081822
+      dum124 |  -1.756382   .4094963    -4.29   0.000     -2.55898   -.9537841
+      dum125 |          0  (omitted)
+      dum126 |          0  (omitted)
+      dum127 |          0  (omitted)
+      dum128 |  -3.121164   .4094963    -7.62   0.000    -3.923762   -2.318566
+      dum129 |          0  (omitted)
+      dum130 |          0  (omitted)
+      dum131 |  -2.551721   .4094963    -6.23   0.000    -3.354319   -1.749123
+      dum132 |          0  (omitted)
+      dum133 |          0  (omitted)
+      dum134 |  -3.786565   .4094963    -9.25   0.000    -4.589163   -2.983967
+      dum135 |          0  (omitted)
+      dum136 |  -1.031465   .4094963    -2.52   0.012    -1.834063   -.2288668
+      dum137 |          0  (omitted)
+      dum138 |          0  (omitted)
+      dum139 |          0  (omitted)
+      dum140 |          0  (omitted)
+      dum141 |  -2.314374   .4094963    -5.65   0.000    -3.116972   -1.511776
+      dum142 |          0  (omitted)
+      dum143 |          0  (omitted)
+      dum144 |  -1.596364   .4064064    -3.93   0.000    -2.392906   -.7998224
+      dum145 |          0  (omitted)
+      dum146 |          0  (omitted)
+      dum147 |          0  (omitted)
+      dum148 |          0  (omitted)
+      dum149 |  -2.691121   .4064064    -6.62   0.000    -3.487663   -1.894579
+      dum150 |          0  (omitted)
+      dum151 |          0  (omitted)
+      dum152 |          0  (omitted)
+      dum153 |          0  (omitted)
+      dum154 |          0  (omitted)
+      dum155 |  -2.213759   .4064064    -5.45   0.000    -3.010301   -1.417217
+      dum156 |          0  (omitted)
+      dum157 |          0  (omitted)
+       _cons |   3.314408   .2961843    11.19   0.000     2.733897    3.894919
+-------------+----------------------------------------------------------------
+     sigma_u |          0
+     sigma_e |  .49774421
+         rho |          0   (fraction of variance due to u_i)
+------------------------------------------------------------------------------
 ```
 
 Observaçóes: 
 - Paineis desbalanceados são aqueles que apresentam algum tipo de atrito nos seus dados (falta de informação em algum período), nesse caso se as variáveis explicativas estiverem correlacionadas com o termo de erro endossicrático teremos o problema de seleção amostral (solução: Estimador de Heckman).
-- Demonstrando como calcular a primeira diferença de uma variável:
-
-``` r
-generate ccrmrte2 = D.crmrte
-```
 
 ### Estimador de Efeitos Aleatório (RE)
 > O Estimador de Efeitos Aleatório presume que as diferenças individuais são capturadas por um termo de erro específico de cada unidade, ou seja, há a presença do ai, ele é aleatório e não correlacionado com as variáveis explicativas, com isso o estimador MQO Agrupado não será viesado. Ele até pode não ser viesado (é consistente), mas ele não será eficiente, porque haverá autocorrelação serial no termo de erro composto, ou sejam o erro de um período será levado para o outro, já que o ai não é eliminado. A solução para esse problema é a realização de uma transformação de Mínimos Quadrados Generalizados (GLS), em outras palavras, uma transformação "quase na média", isso ocorre porque conhece-se a COR (Vit, Vit-1) e essa correlação está associada a variância do termo de erro endossincrático e à variância de ai. Sendo assim pode-se ponderar os Xs e o Y, pela estrutura de mudança da variância doas erros, dependendo de X, esse seria todo o processo de obtenção do estimador de Efeito Aleatório (RE). Matemáticamente falando:
