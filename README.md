@@ -27,7 +27,7 @@ $Yit = \beta0 + + \beta1Xit + \beta2Xit + eit$
 
 #### 1st First Example
 FERTIL1.DTA (number of children per woman between 1974 and 1984 
-Download -> https://drive.google.com/uc?export=download&id=1xXPLEl_uD2WaSblkRK4nb0u0MaIfZXAV
+- Download -> https://drive.google.com/uc?export=download&id=1xXPLEl_uD2WaSblkRK4nb0u0MaIfZXAV
 
 ```
 # Creating variable suggested by the author
@@ -224,7 +224,7 @@ Note that:
 
 #### 2nd Second Example
 CPS78_85.DTA (Value of salaries of 1978 and 1985) 
-Download -> https://drive.google.com/uc?export=download&id=1pQrWzPQGOPXWqMBZXz-2ezTlHWgOv4HH
+- Download -> https://drive.google.com/uc?export=download&id=1pQrWzPQGOPXWqMBZXz-2ezTlHWgOv4HH
 
 ```
 sum
@@ -391,7 +391,8 @@ reg lwage y85 educ y85educ exper expersq union female y85fem
 - Analyzing the variable female and y85fem. We have that the salary difference in y78, is -31.67%, controlled by the other factors. Furthermore, in the year y85 this effect is 8.50% smaller (31.67% - 8.50% = -23.17%), i.e., a decrease in the effect from one year to the next).
   
 #### 3rd Third Example
-Load Base -> KIELMC.DTA (Effect of installing a garbage incinerator on real estate prices in a region of Massachusetts)
+KIELMC.DTA (Effect of installing a garbage incinerator on real estate prices in a region of Massachusetts)
+- Download -> https://drive.google.com/uc?export=download&id=1RXmFk-LzRyptoLPW3BQIMS8_b8rvLshX
 
 ```
 tab year
@@ -540,8 +541,8 @@ reg rprice y81 nearinc y81nrinc age agesq intst land area rooms baths
 ```
 
 #### 4th Fourth Example
-Load base -> INJURY.DTA (In July 1980 there was a limit for receiving compensation assistance for work accidents in relation to the income of individuals, and individuals with income above the limit did not receive compensation. After July 1982, this limit was raised)
-
+INJURY.DTA (In July 1980 there was a limit for receiving compensation assistance for work accidents in relation to the income of individuals, and individuals with income above the limit did not receive compensation. After July 1982, this limit was raised)
+- Download -> https://drive.google.com/uc?export=download&id=1RsIsNjywFAeEkgdN15fesj44ieVNRU5Y
 ```
 reg ldurat afchnge highearn afhigh
 ```
@@ -622,8 +623,8 @@ $(Yi2 - Yi1) = \delta0 + \beta1(Xi2 - Xi1) + (ui2 - ui1)$
 $∆Yi = \delta0 + \beta1∆Xi + ∆ui$
 
 #### 1st First Example
-Load Base -> CRIME2.DTA (Crime rates for US counties in 82 and 87).
-
+CRIME2.DTA (Crime rates for US counties in 82 and 87).
+- Download -> https://drive.google.com/uc?export=download&id=178_1AxOjDBdqFvSSmp-7_EqqtwQjPWxm
 ```
 tab year
 ```
@@ -698,7 +699,8 @@ generate ccrmrte2 = D.crmrte
 - Interpretation unem -> When unemployment varies by one percentage point, the occurrence of crime increases (varies positively) by 2.2 occurrences for each group of 1000 inhabitants.
 
 #### 2nd Second Example
-Load Base -> Jtrain.DTA (Monitoring of 54 companies for three years, showing the disposal rate of their products, in a scenario where there is a government subsidy for employee training).
+Jtrain.DTA (Monitoring of 54 companies for three years, showing the disposal rate of their products, in a scenario where there is a government subsidy for employee training).
+- Download -> https://drive.google.com/uc?export=download&id=1OQDTCc2yjt5gKGr4XLva3_KCJx6kcB1M
 
 Descrição das variáveis: 
 - lscrap = taxa de descarte
@@ -1237,7 +1239,8 @@ Therefore, we can conclude that:
 > Therefore, the GLS estimator, in the context of random effects, is an intermediate situation.
     
 #### 3rd Third Example
-Load Base -> WAGEPAN.DTA"
+WAGEPAN.DTA"
+- Download -> https://drive.google.com/uc?export=download&id=1ZppP8EB1W3HmazdhFPIAO-SURIRHC3c4
 
 Legenda de variáveis:
 - ui -> ai
