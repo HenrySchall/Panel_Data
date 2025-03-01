@@ -25,8 +25,11 @@ $Yit = \beta0 + + \beta1Xit + \beta2Xit + eit$
 
 ## Pooled Cross Section
 
+Download all databases -> https://drive.google.com/uc?export=download&id=1LxgP_5rwJqdArzbOgb8BryvE6d8DcflC?usp=drive_link
+
 #### 1st First Example
-Load Base -> FERTIL1.DTA (number of children per woman between 1974 and 1984)
+Dowload and Load the Databasse -> https://drive.google.com/uc?export=download&id=1xXPLEl_uD2WaSblkRK4nb0u0MaIfZXAV
+FERTIL1.DTA (number of children per woman between 1974 and 1984)
 
 ```
 # Creating variable suggested by the author
