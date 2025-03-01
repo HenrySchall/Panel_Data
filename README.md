@@ -26,8 +26,7 @@ $Yit = \beta0 + + \beta1Xit + \beta2Xit + eit$
 ## Pooled Cross Section
 
 #### 1st First Example
-Download and Load the Databasse -> https://drive.google.com/uc?export=download&id=1xXPLEl_uD2WaSblkRK4nb0u0MaIfZXAV
-FERTIL1.DTA (number of children per woman between 1974 and 1984)
+FERTIL1.DTA (number of children per woman between 1974 and 1984 -> https://drive.google.com/uc?export=download&id=1xXPLEl_uD2WaSblkRK4nb0u0MaIfZXAV
 
 ```
 # Creating variable suggested by the author
@@ -223,7 +222,7 @@ Note that:
 - Our model is significant, because we have Prob > F = 0.0000 . However, not all of our variables are significant at the 10% significance level. - Since the dummies y74, y76, y78, 80 are not significant, that is, controlled by the other factors, the fertility of these years is statistically equal to that of y72. - We can see that the dummies y82 and y84 are significant and negative, that is, controlled by the other factors, there is a long-term trend in the decline of fertility and this decline is approximately (0.522 - 0.545 = -0.023 children).
 
 #### 2nd Second Example
-Load base -> CPS78_85.DTA (Value of salaries of 1978 and 1985)
+CPS78_85.DTA (Value of salaries of 1978 and 1985) -> https://drive.google.com/uc?export=download&id=1pQrWzPQGOPXWqMBZXz-2ezTlHWgOv4HH
 
 ```
 sum
