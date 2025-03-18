@@ -2,7 +2,7 @@
 
 ![IMG2345](https://github.com/user-attachments/assets/6a6e2c3a-d5e6-48f2-8560-d28f17aa2784)
 
-> Panel data estimation is the analysis of data that have a two-factor structure, i.e., we have one factor that represents different units (such as individuals, companies, countries, etc.) and another that represents different time periods. This document seeks to demonstrate the process of panel data estimation, using as a basis the book: "*Econometric Analysis of Cross Section and Panel Data, Second Edition, by Jeffrey M. Wooldridge*". All the bases used in this code can be found in this repository, for any questions consult the referenced work.
+> Panel data estimation is the analysis of data that have a two-factor structure, i.e., we have one factor that represents different units (such as individuals, companies, countries, etc.) and another that represents different time periods. This repository seeks to demonstrate the process of panel data estimation, using as a basis the book: "*Econometric Analysis of Cross Section and Panel Data, Second Edition, by Jeffrey M. Wooldridge*". In case of doubt, consult the referenced work.
 
 ### General Characteristics
 - Heterogeneity of units: Each unit (individual, company, country, etc.) may have its own characteristics that do not vary over time.
@@ -1638,6 +1638,5 @@ Test of H0: Difference in coefficients not systematic
             = 250.26
 Prob > chi2 = 0.0000
 ```
-
 
 
