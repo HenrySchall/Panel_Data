@@ -652,7 +652,6 @@ reg lwage black hisp exper expersq union educ married d81 d82 d83 d84 d85 d86 d8
 ```
 
 ```
-# Estimated GLS
 # vce(cluster nr) -> controle de heterocedasticidade
 Linear regression                               Number of obs     =      4,360
                                                 F(14, 544)        =      47.10
