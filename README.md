@@ -13,9 +13,10 @@
 
 ### Panel Data Models
 1) Pooled Cross Section Model
-2) Fixed Effects Model (FE) 
-3) Random Effects Model (RE)
-4) Dynamic Effects Model (GMM)
+2) True Painel
+   - Fixed Effects Model (FE)
+   - Random Effects Model (RE)
+   - Dynamic Effects Model (GMM)
 
 ### General Equation
 $Yit = \beta0 + + \beta1Xit + \beta2Xit + eit$
