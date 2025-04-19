@@ -2,7 +2,7 @@
 
 ![IMG_2672](https://github.com/user-attachments/assets/6ba074b6-270c-40b0-af7b-d787a13cf2d5)
 
-> Panel data estimation is the analysis of data that have a two-factor structure, i.e., we have one factor that represents different units (such as individuals, companies, countries, etc.) and another that represents different time periods. This repository seeks to demonstrate the process of panel data estimation, using as a basis the book: "*Econometric Analysis of Cross Section and Panel Data, Second Edition, by Jeffrey M. Wooldridge*". In case of doubt, consult the referenced work.
+> Panel data estimation is the analysis of data that have a two-factor structure, i.e., we have one factor that represents different units (such as individuals, companies, countries, etc.) and another that represents different time periods. This repository demonstrates the process of estimating the panel data model.
 
 ### General Characteristics
 - Heterogeneity of units: Each unit (individual, company, country, etc.) may have its own characteristics that do not vary over time.
@@ -23,3 +23,6 @@ $Yit = \beta0 + + \beta1Xit + \beta2Xit + eit$
 
 - i = specific units
 - t = time
+
+### Repository Bibliographic References:
+- Econometric Analysis of Cross Section and Panel Data, Second Edition, by Jeffrey M. Wooldridge
