@@ -1,5 +1,4 @@
 # Load Base -> CRIME2.DTA (Crime rates for US counties in 82 and 87).
-
 tab year
 
    82 or 87 |      Freq.     Percent        Cum.
